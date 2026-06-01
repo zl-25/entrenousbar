@@ -1,5 +1,6 @@
 import React from 'react';
 import ScrollReveal from '../common/ScrollReveal';
+import OptimizedImage from '../common/OptimizedImage';
 
 const Newsletter = () => {
   return (
@@ -13,7 +14,13 @@ const Newsletter = () => {
           <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
             <div className="flex items-center gap-8">
               <div className="w-32 md:w-40 shrink-0 transition-transform hover:scale-105 cursor-pointer">
-                <img src="https://vgbujcuwptvheqijyjbe.supabase.co/storage/v1/object/public/hmac-uploads/uploads/960f6757-273c-400d-ba6e-33abc45b8955/1780235731271-08a07200/1000397469.png" alt="Logo Entre Nous Bar" className="w-full h-auto drop-shadow-[0_0_15px_rgba(34,197,94,0.3)]" loading="lazy" decoding="async" />
+                <OptimizedImage
+                  src="https://vgbujcuwptvheqijyjbe.supabase.co/storage/v1/object/public/hmac-uploads/uploads/960f6757-273c-400d-ba6e-33abc45b8955/1780235731271-08a07200/1000397469.png"
+                  alt="Logo Entre Nous Bar"
+                  className="w-full h-auto drop-shadow-[0_0_15px_rgba(34,197,94,0.3)]"
+                  objectFit="contain"
+                  priority={true}
+                />
               </div>
               <div>
                 <h2 className="text-2xl font-bold uppercase mb-2 clash">RESTEZ CONNECTÉ</h2>

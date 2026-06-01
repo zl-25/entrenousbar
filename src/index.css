@@ -39,11 +39,7 @@ h1, h2, h3, .clash {
   text-transform: uppercase;
 }
 
-.hero-gradient {
-  background: linear-gradient(to bottom, rgba(5,5,5,0.4) 0%, rgba(5,5,5,0.7) 60%, rgba(5,5,5,1) 100%), url('https://vgbujcuwptvheqijyjbe.supabase.co/storage/v1/object/public/hmac-uploads/uploads/960f6757-273c-400d-ba6e-33abc45b8955/1780234681098-f765ca91/1000397404.png');
-  background-size: cover;
-  background-position: center;
-}
+/* Hero background image now handled by BackgroundImage component */
 
 .event-card {
   background: rgba(255, 255, 255, 0.03);

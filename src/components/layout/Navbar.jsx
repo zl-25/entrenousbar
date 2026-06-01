@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import OptimizedImage from '../common/OptimizedImage';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,7 +21,14 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-20">
           <div className="flex items-center shrink-0">
             <Link to="/" id="nav-logo-link" className="block group">
-              <img src="https://vgbujcuwptvheqijyjbe.supabase.co/storage/v1/object/public/hmac-uploads/uploads/960f6757-273c-400d-ba6e-33abc45b8955/1780235731271-08a07200/1000397469.png" alt="Entre Nous Bar Logo" className="h-12 md:h-16 w-auto drop-shadow-[0_0_10px_rgba(34,197,94,0.2)] group-hover:scale-105 transition-transform duration-300" fetchPriority="high" decoding="async" width="160" height="64" />
+              <OptimizedImage
+                src="https://vgbujcuwptvheqijyjbe.supabase.co/storage/v1/object/public/hmac-uploads/uploads/960f6757-273c-400d-ba6e-33abc45b8955/1780235731271-08a07200/1000397469.png"
+                alt="Entre Nous Bar Logo"
+                className="h-12 md:h-16 w-auto drop-shadow-[0_0_10px_rgba(34,197,94,0.2)] group-hover:scale-105 transition-transform duration-300"
+                priority={true}
+                width={160}
+                height={64}
+              />
             </Link>
           </div>
 

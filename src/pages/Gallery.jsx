@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Gallery.css';
 import Lightbox from '../components/common/Lightbox';
+import OptimizedImage from '../components/common/OptimizedImage';
 
 const GALLERY_IMAGES = [
   '1000397653.jpg', '1000397654.jpg', '1000397655.jpg', '1000397656.jpg', '1000397657.jpg',
@@ -45,7 +46,13 @@ const Gallery = () => {
               className="masonry-item"
               onClick={() => setActiveIndex(idx)}
             >
-              <img src={img.url} alt={`Gallery ${img.id}`} className="masonry-img" loading="lazy" />
+              <OptimizedImage
+                src={img.url}
+                alt={`Gallery ${img.id}`}
+                className="masonry-img cursor-pointer"
+                objectFit="cover"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              />
               <div className="masonry-overlay">
                 <span className="zoom-icon">+</span>
               </div>

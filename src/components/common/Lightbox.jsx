@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import OptimizedImage from './OptimizedImage';
 
 const Lightbox = ({ images, activeIndex, onClose, onPrev, onNext }) => {
   useEffect(() => {
@@ -55,11 +56,15 @@ const Lightbox = ({ images, activeIndex, onClose, onPrev, onNext }) => {
         className="relative max-w-5xl max-h-[85vh] px-4 flex flex-col items-center"
         onClick={(e) => e.stopPropagation()}
       >
-        <img 
-          src={currentImage.url} 
-          alt={`Photo de la galerie ${currentImage.id + 1}`} 
-          className="max-w-full max-h-[80vh] object-contain rounded-xl border border-white/10 shadow-[0_0_50px_rgba(21,128,61,0.15)] animate-fade-in"
-        />
+        <div className="max-w-full max-h-[80vh]">
+          <OptimizedImage
+            src={currentImage.url}
+            alt={`Photo de la galerie ${currentImage.id + 1}`}
+            className="rounded-xl border border-white/10 shadow-[0_0_50px_rgba(21,128,61,0.15)] animate-fade-in max-w-full max-h-[80vh]"
+            objectFit="contain"
+            priority={true}
+          />
+        </div>
         
         {/* Caption/Counter */}
         <div className="mt-4 text-center">

@@ -1,10 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ScrollReveal from '../common/ScrollReveal';
+import BackgroundImage from '../common/BackgroundImage';
 
 const Hero = () => {
   return (
-    <section className="hero-gradient pt-32 pb-20 lg:pt-48 lg:pb-40">
+    <BackgroundImage
+      src="https://vgbujcuwptvheqijyjbe.supabase.co/storage/v1/object/public/hmac-uploads/uploads/960f6757-273c-400d-ba6e-33abc45b8955/1780234681098-f765ca91/1000397404.png"
+      className="pt-32 pb-20 lg:pt-48 lg:pb-40"
+      priority={true}
+      overlayOpacity={0.7}
+    >
       <div className="max-w-7xl mx-auto px-4 lg:px-8">
         <div className="max-w-2xl">
           <ScrollReveal delay={100}>
@@ -35,7 +41,7 @@ const Hero = () => {
           </ScrollReveal>
         </div>
       </div>
-    </section>
+    </BackgroundImage>
   );
 };
 

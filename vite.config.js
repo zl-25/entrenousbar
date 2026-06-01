@@ -17,5 +17,27 @@ export default defineConfig({
         secure: true,
       }
     }
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('jspdf') || id.includes('html2canvas')) {
+            return 'pdf-export';
+          }
+          if (id.includes('qrcode')) {
+            return 'qr-code';
+          }
+          if (id.includes('zod') || id.includes('react-hook-form')) {
+            return 'form-validation';
+          }
+          if (id.includes('react-router-dom')) {
+            return 'router';
+          }
+        }
+      }
+    },
+    chunkSizeWarningLimit: 600
   }
 })
+

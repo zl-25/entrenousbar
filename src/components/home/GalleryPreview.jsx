@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ScrollReveal from '../common/ScrollReveal';
+import OptimizedImage from '../common/OptimizedImage';
 
 const GalleryPreview = () => {
   const images = [
@@ -27,7 +28,13 @@ const GalleryPreview = () => {
           {images.map((img, index) => (
             <ScrollReveal key={index} delay={index * 100}>
               <div className="aspect-square rounded-xl overflow-hidden">
-                <img src={img} alt={`Gallery preview ${index + 1}`} className="w-full h-full object-cover hover:scale-110 transition-transform duration-700" loading="lazy" decoding="async" />
+                <OptimizedImage
+                  src={img}
+                  alt={`Gallery preview ${index + 1}`}
+                  className="w-full h-full hover:scale-110 transition-transform duration-700"
+                  objectFit="cover"
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
+                />
               </div>
             </ScrollReveal>
           ))}
