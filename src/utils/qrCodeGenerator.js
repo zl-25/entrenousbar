@@ -33,8 +33,8 @@ export const generateTicketQRCode = (ticketData) => {
   };
 
   return generateQRCode(qrData, {
-    width: 250,
-    margin: 3
+    width: 300,
+    margin: 2
   });
 };
 

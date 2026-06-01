@@ -33,8 +33,7 @@ const BackgroundImage = ({
         backgroundColor: '#050505',
         backgroundImage: isLoaded ? `url('${src}')` : 'none',
         backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed'
+        backgroundPosition: 'center'
       }}
     >
       {/* Overlay gradient */}

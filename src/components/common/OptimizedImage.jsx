@@ -56,7 +56,6 @@ const OptimizedImage = ({
       style={{ objectFit }}
       onLoad={handleLoad}
       onError={handleError}
-      crossOrigin="anonymous"
     />
   );
 };

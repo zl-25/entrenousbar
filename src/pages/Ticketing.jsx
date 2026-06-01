@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { getEventById } from '../data/events';
 import { jsPDF } from 'jspdf';
-import html2canvas from 'html2canvas';
 import { validateForm, ticketingSchema } from '../utils/validationSchemas';
 import TicketDisplay from '../components/ticketing/TicketDisplay';
 import OptimizedImage from '../components/common/OptimizedImage';
@@ -40,7 +39,6 @@ const Ticketing = () => {
     return params.get('status') === 'success';
   });
   const [paymentError, setPaymentError] = useState(null);
-  const ticketRef = useRef(null);
 
   useEffect(() => {
     const verifyPayment = async () => {
@@ -181,27 +179,85 @@ const Ticketing = () => {
     if (step < 4) setStep(step + 1);
   };
 
-  const downloadTicket = async () => {
-    if (!ticketRef.current) return;
+  const downloadTicket = async (qrCodeBase64, reference) => {
     setIsDownloading(true);
     try {
-      const canvas = await html2canvas(ticketRef.current, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: '#050505',
-        allowTaint: true
-      });
-      const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
         format: 'a4'
       });
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-      pdf.save(`Ticket_EntreNousBar_${event.id}_${Date.now()}.pdf`);
+      // Fond noir
+      pdf.setFillColor(5, 5, 5);
+      pdf.rect(0, 0, 210, 297, 'F');
+
+      // Header
+      pdf.setTextColor(255, 255, 255);
+      pdf.setFontSize(22);
+      pdf.text('ENTRE NOUS BAR', 105, 30, { align: 'center' });
+      
+      pdf.setTextColor(21, 128, 61); // green-700
+      pdf.setFontSize(14);
+      pdf.text('TICKET OFFICIEL', 105, 40, { align: 'center' });
+
+      // Ticket Box
+      pdf.setDrawColor(255, 255, 255);
+      pdf.setLineWidth(0.5);
+      pdf.roundedRect(20, 50, 170, 200, 5, 5, 'S');
+
+      // Event Info
+      pdf.setTextColor(255, 255, 255);
+      pdf.setFontSize(20);
+      pdf.text(event.title, 105, 70, { align: 'center' });
+
+      pdf.setFontSize(12);
+      pdf.setTextColor(156, 163, 175); // gray-400
+      pdf.text(`${event.day} ${event.month} ${event.year} • ${event.time}`, 105, 80, { align: 'center' });
+
+      // Ligne de séparation
+      pdf.setDrawColor(50, 50, 50);
+      pdf.line(30, 95, 180, 95);
+
+      // Détails
+      pdf.setFontSize(10);
+      pdf.setTextColor(156, 163, 175);
+      pdf.text('TITULAIRE', 30, 110);
+      pdf.setTextColor(255, 255, 255);
+      pdf.setFontSize(12);
+      pdf.text(formData.name, 30, 117);
+
+      pdf.setFontSize(10);
+      pdf.setTextColor(156, 163, 175);
+      pdf.text('TYPE DE TICKET', 120, 110);
+      pdf.setTextColor(255, 255, 255);
+      pdf.setFontSize(12);
+      pdf.text(currentTicket.name, 120, 117);
+
+      pdf.setFontSize(10);
+      pdf.setTextColor(156, 163, 175);
+      pdf.text('RÉFÉRENCE', 30, 130);
+      pdf.setTextColor(255, 255, 255);
+      pdf.setFontSize(12);
+      pdf.text(reference, 30, 137);
+
+      pdf.setFontSize(10);
+      pdf.setTextColor(156, 163, 175);
+      pdf.text('PRIX', 120, 130);
+      pdf.setTextColor(255, 255, 255);
+      pdf.setFontSize(12);
+      pdf.text(currentTicket.price, 120, 137);
+
+      // Ligne de séparation
+      pdf.setDrawColor(50, 50, 50);
+      pdf.line(30, 150, 180, 150);
+
+      // QR Code
+      if (qrCodeBase64) {
+        pdf.addImage(qrCodeBase64, 'PNG', 65, 160, 80, 80);
+      }
+
+      pdf.save(`Ticket_EntreNousBar_${reference}.pdf`);
     } catch (err) {
       console.error('Erreur PDF:', err);
       alert('Erreur lors de la génération du ticket PDF.');
@@ -510,7 +566,7 @@ const Ticketing = () => {
         )}
 
         {!isVerifying && !paymentError && step === 4 && (
-          <div ref={ticketRef} className="flex flex-col md:flex-row gap-8">
+          <div className="flex flex-col md:flex-row gap-8">
             <TicketDisplay
               event={event}
               ticket={currentTicket}

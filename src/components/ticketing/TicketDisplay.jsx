@@ -12,10 +12,12 @@ const TicketDisplay = ({
   const [qrCode, setQrCode] = useState(null);
   const [qrLoading, setQrLoading] = useState(true);
 
-  const reference = `ENB-${event.id}-${ticket.id}-${Date.now().toString().slice(-5)}`;
+  // Utiliser useState pour stabiliser la référence et éviter la boucle de re-rendu
+  const [reference] = useState(() => `ENB-${event.id}-${ticket.id}-${Date.now().toString().slice(-5)}`);
 
   useEffect(() => {
     const generateQR = async () => {
+      setQrLoading(true);
       try {
         const qr = await generateTicketQRCode({
           id: reference,
@@ -125,7 +127,7 @@ const TicketDisplay = ({
 
             <div className="flex flex-col gap-3" data-html2canvas-ignore="true">
               <button 
-                onClick={onDownload}
+                onClick={() => onDownload(qrCode, reference)}
                 disabled={isLoading || qrLoading}
                 className="w-full bg-green-700 hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all uppercase text-xs tracking-widest text-white"
               >
