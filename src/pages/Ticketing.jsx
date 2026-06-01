@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { getEventById } from '../data/events';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 const TICKETS = [
   { id: 'test', name: 'Ticket Test', desc: 'Ticket de test pour validation de paiement', price: '10 FCFA', priceNum: 10, icon: 'lucide:settings', iconColor: 'text-red-500' },
@@ -27,16 +29,76 @@ const Ticketing = () => {
   const [formData, setFormData] = useState({ name: '', phone: '', email: '', address: '', newsletters: false });
   const [isProcessing, setIsProcessing] = useState(false);
 
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [paymentError, setPaymentError] = useState(null);
+  const ticketRef = useRef(null);
+
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('status') === 'success') {
-      const savedData = localStorage.getItem('maketou_form_data');
-      if (savedData) setFormData(JSON.parse(savedData));
-      const savedTicket = localStorage.getItem('maketou_ticket');
-      if (savedTicket) setSelectedTicket(savedTicket);
-      setStep(4);
-    }
+    const verifyPayment = async () => {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('status') === 'success') {
+        const cartId = localStorage.getItem('maketou_cart_id');
+        if (!cartId) {
+          setPaymentError("Référence de paiement introuvable.");
+          return;
+        }
+
+        setIsVerifying(true);
+        try {
+          const response = await fetch(`https://api.maketou.net/api/v1/stores/cart/${cartId}`, {
+            headers: {
+              'Authorization': `Bearer ${import.meta.env.VITE_MAKETOU_API_KEY}`
+            }
+          });
+
+          if (!response.ok) throw new Error("Erreur vérification");
+          const data = await response.json();
+
+          // Si le statut est complété, on valide l'étape 4
+          if (data.status === 'completed') {
+            const savedData = localStorage.getItem('maketou_form_data');
+            if (savedData) setFormData(JSON.parse(savedData));
+            const savedTicket = localStorage.getItem('maketou_ticket');
+            if (savedTicket) setSelectedTicket(savedTicket);
+            setStep(4);
+          } else {
+            setPaymentError(`Le paiement n'est pas encore finalisé (statut: ${data.status}). Veuillez contacter le support si le problème persiste.`);
+          }
+        } catch (err) {
+          console.error(err);
+          setPaymentError("Impossible de vérifier le statut de votre paiement.");
+        } finally {
+          setIsVerifying(false);
+        }
+      }
+    };
+    verifyPayment();
   }, []);
+
+  const downloadTicket = async () => {
+    if (!ticketRef.current) return;
+    try {
+      const canvas = await html2canvas(ticketRef.current, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#050505'
+      });
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4'
+      });
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+      
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save(`Ticket_EntreNousBar_${event.id}.pdf`);
+    } catch (err) {
+      console.error(err);
+      alert("Erreur lors de la génération du ticket PDF.");
+    }
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -101,6 +163,9 @@ const Ticketing = () => {
         const data = await response.json();
         
         if (data && data.redirectUrl) {
+          if (data.cart && data.cart.id) {
+            localStorage.setItem('maketou_cart_id', data.cart.id);
+          }
           setStep(3);
           window.location.href = data.redirectUrl;
         } else {
@@ -373,9 +438,30 @@ const Ticketing = () => {
           </div>
         )}
 
-        {/* STEP 4 : CONFIRMATION */}
-        {step === 4 && (
-          <div className="animate-celebrate opacity-0 flex flex-col md:flex-row gap-8 bg-white/[0.02] border border-white/5 rounded-3xl p-6 md:p-10 success-glow">
+        {/* STEP 4 : CONFIRMATION OU VERIFICATION */}
+        {isVerifying && (
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <div className="w-16 h-16 border-4 border-yellow-500 border-t-transparent rounded-full animate-spin mb-6"></div>
+            <h3 className="text-2xl font-bold clash text-white mb-2">Vérification de votre paiement...</h3>
+            <p className="text-gray-400">Veuillez patienter quelques instants.</p>
+          </div>
+        )}
+
+        {paymentError && (
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <div className="w-16 h-16 bg-red-500/20 text-red-500 rounded-full flex items-center justify-center text-3xl mb-6">
+              <iconify-icon icon="lucide:x-circle"></iconify-icon>
+            </div>
+            <h3 className="text-2xl font-bold clash text-white mb-2">Problème de paiement</h3>
+            <p className="text-red-400 mb-6">{paymentError}</p>
+            <button onClick={() => window.location.href = '/'} className="bg-white/10 hover:bg-white/20 text-white px-8 py-3 rounded-xl font-bold transition-all">Retour à l'accueil</button>
+          </div>
+        )}
+
+        {!isVerifying && !paymentError && step === 4 && (
+          <div ref={ticketRef} className="animate-celebrate opacity-0 flex flex-col md:flex-row gap-8 bg-[#050505] border border-white/5 rounded-3xl p-6 md:p-10 success-glow relative overflow-hidden">
+            {/* Background design for ticket */}
+            <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-green-600/20 rounded-full blur-[80px]"></div>
             <div className="w-full md:w-2/5 shrink-0">
               <div className="relative aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl">
                 <img src={event.image} className="w-full h-full object-cover" alt={event.title} decoding="async" />
@@ -432,8 +518,11 @@ const Ticketing = () => {
                   </div>
                 </div>
                 
-                <div className="flex flex-col gap-3">
-                  <button className="w-full bg-green-700 hover:bg-green-600 py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all uppercase text-xs tracking-widest text-white">
+                <div className="flex flex-col gap-3" data-html2canvas-ignore="true">
+                  <button 
+                    onClick={downloadTicket}
+                    className="w-full bg-green-700 hover:bg-green-600 py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all uppercase text-xs tracking-widest text-white"
+                  >
                     <iconify-icon icon="lucide:download"></iconify-icon> Télécharger mon ticket (PDF)
                   </button>
                   <div className="flex gap-3">
