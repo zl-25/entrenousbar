@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Gallery.css';
+import Lightbox from '../components/common/Lightbox';
 
 const GALLERY_IMAGES = [
   '1000397653.jpg', '1000397654.jpg', '1000397655.jpg', '1000397656.jpg', '1000397657.jpg',
@@ -14,20 +15,37 @@ const GALLERY_IMAGES = [
 }));
 
 const Gallery = () => {
+  const [activeIndex, setActiveIndex] = useState(null);
+
+  const handlePrev = () => {
+    setActiveIndex((prev) => (prev === 0 ? GALLERY_IMAGES.length - 1 : prev - 1));
+  };
+
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev === GALLERY_IMAGES.length - 1 ? 0 : prev + 1));
+  };
+
   return (
-    <div className="gallery-page section-padding">
-      <div className="container">
-        <div className="text-center mb-2xl">
-          <h1 className="page-title">NOTRE GALERIE</h1>
-          <p className="page-subtitle text-secondary">
-            Revivez les meilleurs moments passés à Entre Nous Bar.
+    <div className="gallery-page section-padding pt-28 sm:pt-32 pb-20">
+      <div className="container max-w-7xl mx-auto px-4 lg:px-8">
+        <div className="text-center mb-12 sm:mb-16">
+          <p className="text-xs font-bold tracking-[0.3em] text-green-500 uppercase mb-4">L'ambiance Entre Nous</p>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold clash tracking-tight text-white mb-4">
+            NOTRE GALERIE
+          </h1>
+          <p className="text-gray-400 text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
+            Revivez en images les meilleurs moments passés sous les étoiles de l'Entre Nous Bar.
           </p>
         </div>
 
         <div className="masonry-grid">
-          {GALLERY_IMAGES.map((img) => (
-            <div key={img.id} className="masonry-item">
-              <img src={img.url} alt={`Gallery ${img.id}`} className="masonry-img" />
+          {GALLERY_IMAGES.map((img, idx) => (
+            <div 
+              key={img.id} 
+              className="masonry-item"
+              onClick={() => setActiveIndex(idx)}
+            >
+              <img src={img.url} alt={`Gallery ${img.id}`} className="masonry-img" loading="lazy" />
               <div className="masonry-overlay">
                 <span className="zoom-icon">+</span>
               </div>
@@ -35,6 +53,14 @@ const Gallery = () => {
           ))}
         </div>
       </div>
+
+      <Lightbox 
+        images={GALLERY_IMAGES}
+        activeIndex={activeIndex}
+        onClose={() => setActiveIndex(null)}
+        onPrev={handlePrev}
+        onNext={handleNext}
+      />
     </div>
   );
 };
