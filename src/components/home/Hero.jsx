@@ -29,10 +29,10 @@ const Hero = () => {
           
           <ScrollReveal delay={700}>
             <div className="flex flex-wrap gap-4">
-              <a href="#events" className="bg-green-700 hover:bg-green-600 text-white px-8 py-4 rounded font-bold flex items-center gap-2 transition-all">
+              <Link to="/events" className="bg-green-700 hover:bg-green-600 text-white px-8 py-4 rounded font-bold flex items-center gap-2 transition-all">
                 VOIR LES ÉVÉNEMENTS
                 <iconify-icon icon="lucide:calendar"></iconify-icon>
-              </a>
+              </Link>
               <Link to="/reservation" className="border border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black px-8 py-4 rounded font-bold flex items-center gap-2 transition-all">
                 RÉSERVER UNE TABLE
                 <iconify-icon icon="lucide:utensils"></iconify-icon>

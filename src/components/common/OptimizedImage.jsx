@@ -42,6 +42,8 @@ const OptimizedImage = ({
     );
   }
 
+  const finalClassName = `${className.includes('w-') ? '' : 'w-full'} ${className.includes('h-') ? '' : 'h-full'} ${className}`.trim();
+
   return (
     <img
       src={src}
@@ -52,7 +54,7 @@ const OptimizedImage = ({
       height={height}
       loading={priority ? 'eager' : 'lazy'}
       decoding="async"
-      className={`w-full h-full ${className}`}
+      className={finalClassName}
       style={{ objectFit }}
       onLoad={handleLoad}
       onError={handleError}

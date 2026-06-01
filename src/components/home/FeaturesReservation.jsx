@@ -1,7 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ScrollReveal from '../common/ScrollReveal';
 
 const FeaturesReservation = () => {
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    guests: '',
+    date: '',
+    time: ''
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate('/reservation', { state: { ...formData } });
+  };
   return (
     <section className="py-24 bg-[#0a0a0a]" id="reservation">
       <div className="max-w-7xl mx-auto px-4 lg:px-8">
@@ -61,10 +73,14 @@ const FeaturesReservation = () => {
               <h2 className="text-2xl sm:text-3xl font-bold uppercase mb-3 clash text-white">Réservez votre table</h2>
               <p className="text-gray-400 text-sm mb-8 leading-relaxed">Assurez-vous une place de choix pour vous et vos amis en réservant votre table à l'avance.</p>
               
-              <form className="space-y-5">
+              <form className="space-y-5" onSubmit={handleSubmit}>
                 <div className="relative">
                   <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Convives</label>
-                  <select className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3.5 text-sm appearance-none focus:outline-none focus:border-green-500 transition-colors text-white font-medium">
+                  <select 
+                    className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3.5 text-sm appearance-none focus:outline-none focus:border-green-500 transition-colors text-white font-medium"
+                    value={formData.guests}
+                    onChange={(e) => setFormData({...formData, guests: e.target.value})}
+                  >
                     <option value="">Sélectionnez le nombre de personnes</option>
                     <option value="2">2 personnes</option>
                     <option value="4">4 personnes</option>
@@ -77,11 +93,21 @@ const FeaturesReservation = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div className="relative">
                     <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Date</label>
-                    <input type="date" className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-green-500 transition-colors text-white font-medium [&::-webkit-calendar-picker-indicator]:filter-[invert(1)]" />
+                    <input 
+                      type="date" 
+                      className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-green-500 transition-colors text-white font-medium [&::-webkit-calendar-picker-indicator]:filter-[invert(1)]" 
+                      value={formData.date}
+                      onChange={(e) => setFormData({...formData, date: e.target.value})}
+                    />
                   </div>
                   <div className="relative">
                     <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Heure</label>
-                    <input type="time" className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-green-500 transition-colors text-white font-medium [&::-webkit-calendar-picker-indicator]:filter-[invert(1)]" />
+                    <input 
+                      type="time" 
+                      className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-green-500 transition-colors text-white font-medium [&::-webkit-calendar-picker-indicator]:filter-[invert(1)]" 
+                      value={formData.time}
+                      onChange={(e) => setFormData({...formData, time: e.target.value})}
+                    />
                   </div>
                 </div>
                 

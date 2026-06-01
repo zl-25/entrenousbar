@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import CalendarComponent from '../components/reservation/CalendarComponent';
 import SpaceSelector from '../components/reservation/SpaceSelector';
 import ReservationForm from '../components/reservation/ReservationForm';
@@ -11,13 +12,19 @@ const SPACES = [
 ];
 
 const Reservation = () => {
+  const location = useLocation();
+  const prefill = location.state || {};
+  
   const today = new Date();
-  const [personCount, setPersonCount] = useState(4);
-  const [selectedTime, setSelectedTime] = useState('21:00');
+  const [personCount, setPersonCount] = useState(prefill.guests ? parseInt(prefill.guests) || 4 : 4);
+  const [selectedTime, setSelectedTime] = useState(prefill.time || '21:00');
   const [selectedSpace, setSelectedSpace] = useState(null);
-  const [calendarMonth, setCalendarMonth] = useState(today.getMonth());
-  const [calendarYear, setCalendarYear] = useState(today.getFullYear());
-  const [selectedDate, setSelectedDate] = useState(null);
+  
+  const initialDate = prefill.date ? new Date(prefill.date) : today;
+  const [calendarMonth, setCalendarMonth] = useState(initialDate.getMonth());
+  const [calendarYear, setCalendarYear] = useState(initialDate.getFullYear());
+  const [selectedDate, setSelectedDate] = useState(prefill.date ? initialDate.getDate() : null);
+  
   const [submitted, setSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
