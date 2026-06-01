@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import OptimizedImage from './OptimizedImage';
 
 const EventCard = ({ id, title, type, date, time, price, cardImage, neonClass }) => {
   const dateObj = new Date(date);
@@ -14,12 +13,15 @@ const EventCard = ({ id, title, type, date, time, price, cardImage, neonClass })
       
       {/* Image Section */}
       <div className="relative aspect-[4/5] bg-black overflow-hidden border-b border-white/5">
-        <OptimizedImage
+        <img
           src={cardImage}
           alt={title}
-          className="transition-transform duration-500 group-hover:scale-110"
-          objectFit="cover"
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+          className="w-full h-full transition-transform duration-500 group-hover:scale-110"
+          style={{ objectFit: 'cover' }}
+          onError={(e) => {
+            console.error('EventCard image failed:', cardImage);
+            e.target.style.background = '#333';
+          }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
         

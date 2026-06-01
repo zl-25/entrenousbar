@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './Gallery.css';
 import Lightbox from '../components/common/Lightbox';
-import OptimizedImage from '../components/common/OptimizedImage';
 
 const GALLERY_IMAGES = [
   '1000397653.jpg', '1000397654.jpg', '1000397655.jpg', '1000397656.jpg', '1000397657.jpg',
@@ -46,12 +45,14 @@ const Gallery = () => {
               className="masonry-item"
               onClick={() => setActiveIndex(idx)}
             >
-              <OptimizedImage
+              <img
                 src={img.url}
                 alt={`Gallery ${img.id}`}
-                className="masonry-img cursor-pointer"
-                objectFit="cover"
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                className="w-full h-full object-cover cursor-pointer transition-transform duration-500 hover:scale-105"
+                onError={(e) => {
+                  console.error('Image failed to load:', img.url);
+                  e.target.style.background = '#666';
+                }}
               />
               <div className="masonry-overlay">
                 <span className="zoom-icon">+</span>
