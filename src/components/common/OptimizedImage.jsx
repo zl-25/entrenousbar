@@ -34,7 +34,7 @@ const OptimizedImage = ({
   };
 
   return (
-    <div className={`relative overflow-hidden ${className}`} style={{ aspectRatio: width && height ? width / height : 'auto' }}>
+    <div className={`relative overflow-hidden w-full h-full`} style={{ aspectRatio: width && height ? width / height : 'auto' }}>
       {/* Placeholder shimmer durant le chargement */}
       {!isLoaded && !hasError && (
         <div className="absolute inset-0 bg-gradient-to-r from-gray-700 via-gray-600 to-gray-700 animate-pulse" />
@@ -51,7 +51,7 @@ const OptimizedImage = ({
           height={height}
           loading={priority ? 'eager' : 'lazy'}
           decoding={priority ? 'sync' : 'async'}
-          className={`w-full h-full object-contain ${className} transition-opacity duration-300 ${
+          className={`w-full h-full transition-opacity duration-300 ${className} ${
             isLoaded ? 'opacity-100' : 'opacity-0'
           }`}
           style={{ objectFit }}

@@ -61,7 +61,7 @@ const Lightbox = ({ images, activeIndex, onClose, onPrev, onNext }) => {
             src={currentImage.url}
             alt={`Photo de la galerie ${currentImage.id + 1}`}
             className="rounded-xl border border-white/10 shadow-[0_0_50px_rgba(21,128,61,0.15)] animate-fade-in max-w-full max-h-[80vh]"
-            objectFit="contain"
+            objectFit="cover"
             priority={true}
           />
         </div>

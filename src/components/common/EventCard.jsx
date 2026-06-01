@@ -17,10 +17,9 @@ const EventCard = ({ id, title, type, date, time, price, cardImage, neonClass })
         <OptimizedImage
           src={cardImage}
           alt={title}
-          className="w-full h-full transition-transform duration-500 group-hover:scale-110"
-          objectFit="contain"
+          className="transition-transform duration-500 group-hover:scale-110"
+          objectFit="cover"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-          loading="lazy"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
         

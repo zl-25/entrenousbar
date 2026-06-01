@@ -27,8 +27,8 @@ const EventsPreview = () => {
                   <OptimizedImage
                     src={event.cardImage}
                     alt={event.title}
-                    className="w-full h-full group-hover:scale-105 transition-transform duration-500"
-                    objectFit="contain"
+                    className="group-hover:scale-105 transition-transform duration-500"
+                    objectFit="cover"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
