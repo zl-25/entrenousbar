@@ -33,7 +33,7 @@ const EventDetail = () => {
       <section className="relative h-[60vh] sm:h-[70vh] flex items-center overflow-hidden bg-black">
           <img src={event.image} 
                alt={event.title} 
-               className="absolute inset-0 w-full h-full object-contain sm:object-cover sm:scale-105 opacity-60 sm:opacity-100" />
+               className="absolute inset-0 w-full h-full object-contain sm:object-cover sm:scale-105 opacity-60 sm:opacity-100" decoding="async" />
           <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/40 via-[#050505]/80 to-[#050505]"></div>
           
           <div className="max-w-7xl mx-auto px-4 lg:px-8 w-full relative z-10 pt-20">
@@ -84,7 +84,7 @@ const EventDetail = () => {
                                 {event.djs.map((dj, idx) => (
                                   <div key={idx} className="bg-white/5 backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden group">
                                       <div className="h-64 overflow-hidden relative">
-                                          <img src={dj.image} alt={dj.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                          <img src={dj.image} alt={dj.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy" decoding="async" />
                                           <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
                                       </div>
                                       <div className="p-4">

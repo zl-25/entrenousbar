@@ -27,7 +27,7 @@ const GalleryPreview = () => {
           {images.map((img, index) => (
             <ScrollReveal key={index} delay={index * 100}>
               <div className="aspect-square rounded-xl overflow-hidden">
-                <img src={img} alt={`Gallery preview ${index + 1}`} className="w-full h-full object-cover hover:scale-110 transition-transform duration-700" />
+                <img src={img} alt={`Gallery preview ${index + 1}`} className="w-full h-full object-cover hover:scale-110 transition-transform duration-700" loading="lazy" decoding="async" />
               </div>
             </ScrollReveal>
           ))}

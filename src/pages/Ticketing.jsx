@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { getEventById } from '../data/events';
 
 const TICKETS = [
-  { id: 'test', name: 'Ticket Test', desc: 'Ticket de test pour validation de paiement', price: '1 FCFA', priceNum: 1, icon: 'lucide:settings', iconColor: 'text-red-500' },
+  { id: 'test', name: 'Ticket Test', desc: 'Ticket de test pour validation de paiement', price: '10 FCFA', priceNum: 10, icon: 'lucide:settings', iconColor: 'text-red-500' },
   { id: 'standard', name: 'Ticket Standard', desc: 'Accès général à l\'événement', price: '5 000 FCFA', priceNum: 5000, icon: 'lucide:ticket', iconColor: 'text-green-500' },
   { id: 'vip', name: 'VIP Pass', desc: 'Accès prioritaire + Espace VIP', price: '15 000 FCFA', priceNum: 15000, icon: 'lucide:crown', iconColor: 'text-yellow-500' },
   { id: 'table4', name: 'Table 4 places', desc: 'Table réservée + 1 bouteille au choix', price: '40 000 FCFA', priceNum: 40000, icon: 'lucide:users-2', iconColor: 'text-blue-500' },
@@ -154,7 +154,7 @@ const Ticketing = () => {
     <div className="lg:col-span-5 space-y-8">
       <div className="bg-white/5 border border-white/10 rounded-3xl overflow-hidden p-5 sm:p-6">
         <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-6">
-          <img src={event.image} alt={event.title} className="w-full h-full object-cover" />
+          <img src={event.image} alt={event.title} className="w-full h-full object-cover" decoding="async" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
           <div className="absolute bottom-4 left-4 pr-4">
             <span className="bg-green-700 text-white text-[10px] font-bold px-2 py-1 rounded uppercase mb-2 inline-block">Événement sélectionné</span>
@@ -378,7 +378,7 @@ const Ticketing = () => {
           <div className="animate-celebrate opacity-0 flex flex-col md:flex-row gap-8 bg-white/[0.02] border border-white/5 rounded-3xl p-6 md:p-10 success-glow">
             <div className="w-full md:w-2/5 shrink-0">
               <div className="relative aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl">
-                <img src={event.image} className="w-full h-full object-cover" alt={event.title} />
+                <img src={event.image} className="w-full h-full object-cover" alt={event.title} decoding="async" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                 <div className="absolute bottom-6 left-6 right-6">
                   <p className="text-yellow-500 font-bold uppercase tracking-widest text-[10px] mb-2">Événement Confirmé</p>

@@ -7,7 +7,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
           <div className="space-y-6">
-            <img src="https://vgbujcuwptvheqijyjbe.supabase.co/storage/v1/object/public/hmac-uploads/uploads/960f6757-273c-400d-ba6e-33abc45b8955/1780235731271-08a07200/1000397469.png" alt="Logo Entre Nous Bar" className="h-16 md:h-20 w-auto mb-6 drop-shadow-md" />
+            <img src="https://vgbujcuwptvheqijyjbe.supabase.co/storage/v1/object/public/hmac-uploads/uploads/960f6757-273c-400d-ba6e-33abc45b8955/1780235731271-08a07200/1000397469.png" alt="Logo Entre Nous Bar" className="h-16 md:h-20 w-auto mb-6 drop-shadow-md" loading="lazy" decoding="async" width="160" height="80" />
             <p className="text-gray-400 text-sm leading-relaxed">
               Entre Nous Bar, le bar plein air qui vous accueille dans une ambiance chaleureuse et festive.
             </p>
