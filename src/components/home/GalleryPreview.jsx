@@ -1,32 +1,36 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import ScrollReveal from '../common/ScrollReveal';
 
 const GalleryPreview = () => {
+  const images = [
+    '/1000397653.jpg',
+    '/1000397654.jpg',
+    '/1000397655.jpg',
+    '/1000397656.jpg',
+    '/1000397657.jpg'
+  ];
+
   return (
     <section className="py-24 bg-[#050505]">
       <div className="max-w-7xl mx-auto px-4 lg:px-8">
-        <div className="flex items-center justify-between mb-12">
-          <h2 className="text-3xl font-bold tracking-tight">Galerie</h2>
-          <a href="/gallery" className="text-xs font-bold tracking-widest text-gray-400 hover:text-white flex items-center gap-2">
-            VOIR TOUTE LA GALERIE <iconify-icon icon="lucide:arrow-right"></iconify-icon>
-          </a>
-        </div>
+        <ScrollReveal>
+          <div className="flex items-center justify-between mb-12">
+            <h2 className="text-3xl font-bold tracking-tight">Galerie</h2>
+            <Link to="/gallery" className="text-xs font-bold tracking-widest text-gray-400 hover:text-white flex items-center gap-2">
+              VOIR TOUTE LA GALERIE <iconify-icon icon="lucide:arrow-right"></iconify-icon>
+            </Link>
+          </div>
+        </ScrollReveal>
 
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-          <div className="aspect-square rounded-xl overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1572116469696-31de0f17cc34?auto=format&fit=crop&q=80&w=400" alt="Gallery" className="w-full h-full object-cover hover:scale-110 transition-transform duration-700" />
-          </div>
-          <div className="aspect-square rounded-xl overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=400" alt="Gallery" className="w-full h-full object-cover hover:scale-110 transition-transform duration-700" />
-          </div>
-          <div className="aspect-square rounded-xl overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1541532713592-79a0317b6b77?auto=format&fit=crop&q=80&w=400" alt="Gallery" className="w-full h-full object-cover hover:scale-110 transition-transform duration-700" />
-          </div>
-          <div className="aspect-square rounded-xl overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&q=80&w=400" alt="Gallery" className="w-full h-full object-cover hover:scale-110 transition-transform duration-700" />
-          </div>
-          <div className="aspect-square rounded-xl overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&q=80&w=400" alt="Gallery" className="w-full h-full object-cover hover:scale-110 transition-transform duration-700" />
-          </div>
+          {images.map((img, index) => (
+            <ScrollReveal key={index} delay={index * 100}>
+              <div className="aspect-square rounded-xl overflow-hidden">
+                <img src={img} alt={`Gallery preview ${index + 1}`} className="w-full h-full object-cover hover:scale-110 transition-transform duration-700" />
+              </div>
+            </ScrollReveal>
+          ))}
         </div>
       </div>
     </section>

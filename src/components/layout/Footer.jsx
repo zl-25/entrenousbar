@@ -54,12 +54,15 @@ const Footer = () => {
 
           <div>
             <h4 className="text-xs font-bold tracking-widest uppercase mb-6">Paiements Sécurisés</h4>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-white/5 border border-white/10 p-2 rounded flex items-center justify-center grayscale hover:grayscale-0 transition-all">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" className="h-4 w-auto" alt="Visa" />
+            <div className="grid grid-cols-3 gap-3">
+              <div className="bg-white/5 border border-white/10 p-3 rounded-lg flex items-center justify-center hover:bg-white/10 transition-all">
+                <img src="/visa-logo.svg" className="h-6 w-auto" alt="Visa" />
               </div>
-              <div className="bg-white/5 border border-white/10 p-2 rounded flex items-center justify-center grayscale hover:grayscale-0 transition-all">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" className="h-4 w-auto" alt="Mastercard" />
+              <div className="bg-white/5 border border-white/10 p-3 rounded-lg flex items-center justify-center hover:bg-white/10 transition-all">
+                <img src="/mastercard-logo.svg" className="h-7 w-auto" alt="Mastercard" />
+              </div>
+              <div className="bg-white/5 border border-white/10 p-3 rounded-lg flex items-center justify-center hover:bg-white/10 transition-all">
+                <img src="/airtel-money-logo.svg" className="h-7 w-auto" alt="Airtel Money" />
               </div>
             </div>
             <p className="mt-8 text-xs text-gray-500 uppercase tracking-widest">@entrenousbar</p>

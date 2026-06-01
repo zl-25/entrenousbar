@@ -5,7 +5,8 @@
     firstName: "Test",
     lastName: "User",
     phone: "+24162123456",
-    redirectURL: "http://127.0.0.1:5173/events/2/tickets?status=success"
+    redirectURL: "http://127.0.0.1:5173/events/2/tickets?status=success",
+    customerPrice: 5000
   };
   const response = await fetch('https://api.maketou.net/api/v1/stores/cart/checkout', {
     method: 'POST',

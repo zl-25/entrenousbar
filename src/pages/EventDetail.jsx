@@ -30,32 +30,32 @@ const EventDetail = () => {
   return (
     <div className="bg-[#050505] text-white font-satoshi selection:bg-green-500/30 pt-20">
       {/* Hero Event Section */}
-      <section className="relative h-[70vh] flex items-center overflow-hidden">
+      <section className="relative h-[60vh] sm:h-[70vh] flex items-center overflow-hidden bg-black">
           <img src={event.image} 
                alt={event.title} 
-               className="absolute inset-0 w-full h-full object-cover scale-105" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/20 via-[#050505]/80 to-[#050505]"></div>
+               className="absolute inset-0 w-full h-full object-contain sm:object-cover sm:scale-105 opacity-60 sm:opacity-100" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/40 via-[#050505]/80 to-[#050505]"></div>
           
           <div className="max-w-7xl mx-auto px-4 lg:px-8 w-full relative z-10 pt-20">
               <Link to="/events" className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-sm font-bold tracking-widest uppercase mb-8">
                   <iconify-icon icon="lucide:arrow-left"></iconify-icon> Retour aux événements
               </Link>
               <br />
-              <div className="inline-block bg-green-700 text-white px-5 py-2 rounded-lg font-bold mb-6">
-                  <p className="text-2xl leading-none">{event.day}</p>
-                  <p className="text-xs uppercase">{event.month} {event.year}</p>
+              <div className="inline-block bg-green-700 text-white px-5 py-2 rounded-lg font-bold mb-4 sm:mb-6">
+                  <p className="text-xl sm:text-2xl leading-none">{event.day}</p>
+                  <p className="text-[10px] sm:text-xs uppercase">{event.month} {event.year}</p>
               </div>
-              <h1 className={`text-5xl md:text-6xl lg:text-9xl font-bold tracking-tighter mb-4 clash ${event.neonClass}`}>
+              <h1 className={`text-3xl sm:text-4xl md:text-6xl lg:text-8xl font-bold tracking-tighter mb-4 clash break-words hyphens-auto ${event.neonClass}`}>
                   {event.title.split(' ').map((word, i) => (
                     <React.Fragment key={i}>
                       {word}{i < event.title.split(' ').length - 1 ? (event.title.split(' ').length > 2 && i === 1 ? <br className="hidden md:block" /> : ' ') : ''}
                     </React.Fragment>
                   ))}
               </h1>
-              <div className="flex flex-wrap gap-6 items-center text-sm font-bold tracking-widest text-gray-300 uppercase mt-8">
-                  <span className="flex items-center gap-2"><iconify-icon icon="lucide:clock" className="text-green-500 text-xl"></iconify-icon> {event.time} - {event.endTime}</span>
-                  <span className="flex items-center gap-2"><iconify-icon icon="lucide:map-pin" className="text-green-500 text-xl"></iconify-icon> Entre Nous Bar, Libreville</span>
-                  <span className="flex items-center gap-2"><iconify-icon icon="lucide:ticket" className="text-green-500 text-xl"></iconify-icon> {event.price}</span>
+              <div className="flex flex-wrap gap-4 sm:gap-6 items-center text-xs sm:text-sm font-bold tracking-widest text-gray-300 uppercase mt-6 sm:mt-8">
+                  <span className="flex items-center gap-2"><iconify-icon icon="lucide:clock" className="text-green-500 text-lg sm:text-xl"></iconify-icon> {event.time} - {event.endTime}</span>
+                  <span className="flex items-center gap-2"><iconify-icon icon="lucide:map-pin" className="text-green-500 text-lg sm:text-xl"></iconify-icon> Entre Nous Bar, Libreville</span>
+                  <span className="flex items-center gap-2"><iconify-icon icon="lucide:ticket" className="text-green-500 text-lg sm:text-xl"></iconify-icon> {event.price}</span>
               </div>
           </div>
       </section>

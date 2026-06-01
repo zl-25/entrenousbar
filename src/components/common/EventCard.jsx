@@ -12,14 +12,14 @@ const EventCard = ({ id, title, type, date, time, price, cardImage, neonClass })
       <Link to={`/events/${id}`} className="absolute inset-0 z-10" aria-label={`Voir les détails de ${title}`} />
       
       {/* Image Section */}
-      <div className="relative h-52 sm:h-56 overflow-hidden">
+      <div className="relative aspect-[4/5] bg-black overflow-hidden border-b border-white/5">
         <img 
           src={cardImage} 
           alt={title} 
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          className="w-full h-full object-contain sm:object-cover object-top transition-transform duration-500 group-hover:scale-110"
           loading="lazy"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
         
         {/* Date Badge */}
         <div className="absolute top-3 left-3 bg-green-700 text-white px-3 py-1.5 rounded-lg text-center shadow-lg">

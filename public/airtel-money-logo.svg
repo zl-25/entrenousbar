@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" fill="none">
+  <!-- Airtel swoosh -->
+  <path d="M80 30C55 30 35 50 30 75C25 100 35 130 70 140C90 146 115 135 125 115C130 105 128 92 120 85C112 78 100 78 92 85C88 89 86 95 88 100" stroke="#ED1C24" stroke-width="12" stroke-linecap="round" fill="none"/>
+  <!-- Dot -->
+  <circle cx="88" cy="44" r="8" fill="#ED1C24"/>
+  <!-- "airtel" text -->
+  <text x="150" y="95" font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-size="56" fill="#ED1C24" letter-spacing="-1">airtel</text>
+  <!-- "money" text -->
+  <text x="150" y="145" font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-size="48" fill="#F7941D" letter-spacing="0">money</text>
+</svg>
