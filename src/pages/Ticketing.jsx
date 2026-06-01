@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { getEventById } from '../data/events';
 
 const TICKETS = [
+  { id: 'test', name: 'Ticket Test', desc: 'Ticket de test pour validation de paiement', price: '1 FCFA', priceNum: 1, icon: 'lucide:settings', iconColor: 'text-red-500' },
   { id: 'standard', name: 'Ticket Standard', desc: 'Accès général à l\'événement', price: '5 000 FCFA', priceNum: 5000, icon: 'lucide:ticket', iconColor: 'text-green-500' },
   { id: 'vip', name: 'VIP Pass', desc: 'Accès prioritaire + Espace VIP', price: '15 000 FCFA', priceNum: 15000, icon: 'lucide:crown', iconColor: 'text-yellow-500' },
   { id: 'table4', name: 'Table 4 places', desc: 'Table réservée + 1 bouteille au choix', price: '40 000 FCFA', priceNum: 40000, icon: 'lucide:users-2', iconColor: 'text-blue-500' },
