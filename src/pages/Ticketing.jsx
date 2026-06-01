@@ -71,7 +71,7 @@ const Ticketing = () => {
         localStorage.setItem('maketou_form_data', JSON.stringify(formData));
         localStorage.setItem('maketou_ticket', selectedTicket);
         
-        const response = await fetch('/api/maketou/api/v1/stores/cart/checkout', {
+        const response = await fetch('https://api.maketou.net/api/v1/stores/cart/checkout', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
