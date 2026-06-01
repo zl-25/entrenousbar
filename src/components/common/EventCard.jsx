@@ -18,8 +18,10 @@ const EventCard = ({ id, title, type, date, time, price, cardImage, neonClass })
           alt={title}
           className="w-full h-full transition-transform duration-500 group-hover:scale-110"
           style={{ objectFit: 'cover' }}
+          loading="lazy"
+          decoding="async"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
           onError={(e) => {
-            console.error('EventCard image failed:', cardImage);
             e.target.style.background = '#333';
           }}
         />

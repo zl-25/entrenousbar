@@ -1,28 +1,24 @@
-# Netlify Configuration - Optimisé pour les performances
+# Netlify Configuration
 
 [build]
   command = "npm run build"
   publish = "dist"
-
-# SPA Redirect - Route finale (toujours à la fin)
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
 
 # Cache headers - Assets hachés (très long terme)
 [[headers]]
   for = "/assets/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+    Vary = "Accept-Encoding"
 
 # Cache headers - Images statiques
 [[headers]]
-  for = "/images/*"
+  for = "/*.{jpg,jpeg,png,gif,webp,svg}"
   [headers.values]
     Cache-Control = "public, max-age=604800"
+    Vary = "Accept-Encoding"
 
-# Headers de sécurité généraux
+# Headers de sécurité
 [[headers]]
   for = "/*"
   [headers.values]
@@ -32,3 +28,20 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "geolocation=(), microphone=(), camera=()"
     Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+
+# SPA Redirect - Seulement pour les vraies routes React
+[[redirects]]
+  from = "/events/*"
+  to = "/events/1"
+  status = 200
+
+[[redirects]]
+  from = "/reservation"
+  to = "/"
+  status = 200
+
+# Catch-all pour SPA (DOIT être en dernier)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

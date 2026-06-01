@@ -49,8 +49,10 @@ const Gallery = () => {
                 src={img.url}
                 alt={`Gallery ${img.id}`}
                 className="w-full h-full object-cover cursor-pointer transition-transform duration-500 hover:scale-105"
+                loading="lazy"
+                decoding="async"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 onError={(e) => {
-                  console.error('Image failed to load:', img.url);
                   e.target.style.background = '#666';
                 }}
               />

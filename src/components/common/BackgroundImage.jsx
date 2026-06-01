@@ -8,17 +8,19 @@ const BackgroundImage = ({
   priority = false 
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     if (!src) return;
     
+    // Précharge l'image en arrière-plan
     const img = new Image();
     img.onload = () => setIsLoaded(true);
-    img.onerror = () => setHasError(true);
+    img.onerror = () => setIsLoaded(true); // Continue même en erreur
     
     if (priority) {
-      img.fetchPriority = 'high';
+      img.loading = 'eager';
+    } else {
+      img.loading = 'lazy';
     }
     
     img.src = src;
@@ -28,32 +30,24 @@ const BackgroundImage = ({
     <div 
       className={`relative overflow-hidden ${className}`}
       style={{
-        backgroundColor: '#050505'
+        backgroundColor: '#050505',
+        backgroundImage: isLoaded ? `url('${src}')` : 'none',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed'
       }}
     >
-      {/* Background image */}
-      {isLoaded && !hasError && (
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage: `url('${src}')`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        />
-      )}
-      
       {/* Overlay gradient */}
       <div
-        className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black"
+        className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black pointer-events-none"
         style={{
           opacity: overlayOpacity
         }}
       />
 
       {/* Loading placeholder */}
-      {!isLoaded && !hasError && (
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 animate-pulse" />
+      {!isLoaded && (
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-black animate-pulse" />
       )}
 
       {/* Content */}

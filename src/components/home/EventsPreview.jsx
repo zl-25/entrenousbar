@@ -28,8 +28,10 @@ const EventsPreview = () => {
                     alt={event.title}
                     className="w-full h-full group-hover:scale-105 transition-transform duration-500"
                     style={{ objectFit: 'cover' }}
+                    loading="lazy"
+                    decoding="async"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                     onError={(e) => {
-                      console.error('EventsPreview image failed:', event.cardImage);
                       e.target.style.background = '#333';
                     }}
                   />
