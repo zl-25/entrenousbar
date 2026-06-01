@@ -83,7 +83,7 @@ const Ticketing = () => {
             firstName: firstName,
             lastName: lastName,
             phone: formData.phone,
-            redirectURL: `https://entrenousbar.netlify.app${window.location.pathname}?status=success`,
+            redirectURL: `https://entrenousbare.netlify.app${window.location.pathname}?status=success`,
             customerPrice: currentTicket.priceNum,
             meta: {
               eventId: event.id,
