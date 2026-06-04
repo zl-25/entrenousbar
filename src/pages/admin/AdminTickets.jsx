@@ -122,7 +122,10 @@ const AdminTickets = () => {
                       verifyTicket(ticketRef);
                     }
                   }} 
-                  onError={(error) => console.log(error)}
+                  onError={(error) => {
+                    console.error("Scanner error:", error);
+                    toast.error("Erreur caméra : " + (error?.name === 'NotAllowedError' ? 'Permission refusée' : (error?.message || 'impossible d\'accéder')));
+                  }}
                   options={{ delayBetweenScanSuccess: 2000 }}
                 />
                 <button 
