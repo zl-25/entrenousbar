@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { EVENTS } from '../../data/events';
+import { useAdmin } from '../../contexts/AdminContext';
 import ScrollReveal from '../common/ScrollReveal';
 
 const EventsPreview = () => {
-  const previewEvents = EVENTS.slice(0, 4);
+  const { events } = useAdmin();
+  const previewEvents = events.slice(0, 4);
 
   return (
     <section className="py-24 bg-[#050505]" id="events">
@@ -21,13 +22,12 @@ const EventsPreview = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {previewEvents.map((event, index) => (
             <ScrollReveal key={event.id} delay={index * 150} className="h-full">
-              <Link to={`/events/${event.id}/tickets`} className="event-card rounded-2xl overflow-hidden group block h-full bg-[#111] hover:bg-[#1a1a1a] transition-colors">
-                <div className="relative aspect-[4/5] bg-black">
+              <Link to={`/events/${event.id}/tickets`} className="event-card rounded-2xl overflow-hidden group block h-full bg-[#111] hover:bg-[#1a1a1a] transition-colors flex flex-col">
+                <div className="relative aspect-[4/3] sm:aspect-[4/5] bg-black border-b border-white/5">
                   <img
-                    src={event.cardImage}
+                    src={event.image || event.cardImage}
                     alt={event.title}
-                    className="w-full h-full group-hover:scale-105 transition-transform duration-500"
-                    style={{ objectFit: 'cover' }}
+                    className="w-full h-full object-contain sm:object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
                     decoding="async"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"

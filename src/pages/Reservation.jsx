@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import CalendarComponent from '../components/reservation/CalendarComponent';
 import SpaceSelector from '../components/reservation/SpaceSelector';
 import ReservationForm from '../components/reservation/ReservationForm';
+import { useAdmin } from '../contexts/AdminContext';
 
 const MONTH_NAMES = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
 const SPACES = [
@@ -14,6 +16,7 @@ const SPACES = [
 const Reservation = () => {
   const location = useLocation();
   const prefill = location.state || {};
+  const { addReservation } = useAdmin();
   
   const today = new Date();
   const [personCount, setPersonCount] = useState(prefill.guests ? parseInt(prefill.guests) || 4 : 4);
@@ -27,6 +30,12 @@ const Reservation = () => {
   
   const [submitted, setSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  React.useEffect(() => {
+    if (submitted) {
+      window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    }
+  }, [submitted]);
 
   const handleMonthChange = (direction) => {
     if (direction === -1) {
@@ -48,32 +57,35 @@ const Reservation = () => {
     }
   };
 
+  const formattedDate = selectedDate
+    ? `${selectedDate} ${MONTH_NAMES[calendarMonth]} ${calendarYear}`
+    : null;
+
   const handleSubmit = async (formData) => {
     setIsLoading(true);
     try {
       // Simulation de l'envoi
       await new Promise(resolve => setTimeout(resolve, 1000));
 
-      // À remplacer par un appel API réel
-      console.log('Réservation envoyée:', {
-        ...formData,
-        date: selectedDate,
-        month: calendarMonth,
-        year: calendarYear
+      addReservation({
+        name: formData.name,
+        persons: formData.personCount || personCount,
+        date: formattedDate,
+        time: selectedTime,
+        type: SPACES.find(s => s.id === selectedSpace)?.name || 'Standard',
+        phone: formData.phone,
+        email: formData.email
       });
 
       setSubmitted(true);
+      window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
     } catch (error) {
       console.error('Erreur:', error);
-      alert('Erreur lors de l\'envoi de la réservation');
+      toast.error("Erreur lors de l'envoi de la réservation");
     } finally {
       setIsLoading(false);
     }
   };
-
-  const formattedDate = selectedDate
-    ? `${selectedDate} ${MONTH_NAMES[calendarMonth]} ${calendarYear}`
-    : null;
 
   if (submitted) {
     return (

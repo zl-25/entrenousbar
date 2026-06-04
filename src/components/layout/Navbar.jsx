@@ -10,9 +10,7 @@ const Navbar = () => {
     { name: 'ACCUEIL', path: '/' },
     { name: 'ÉVÉNEMENTS', path: '/events' },
     { name: 'RÉSERVATIONS', path: '/reservation' },
-    { name: 'GALERIE', path: '/gallery' },
-    { name: 'À PROPOS', path: '#' },
-    { name: 'CONTACT', path: '#' }
+    { name: 'GALERIE', path: '/gallery' }
   ];
 
   return (
@@ -52,6 +50,9 @@ const Navbar = () => {
             <Link to="/events" id="nav-reserve-cta" className="hidden sm:block bg-green-700 hover:bg-green-600 text-white px-6 py-2.5 rounded text-xs font-bold tracking-wider transition-all uppercase">
               Réserver / Acheter
             </Link>
+            <Link to="/admin/login" className="text-gray-400 hover:text-white transition-colors flex items-center justify-center p-1" title="Espace Staff">
+              <iconify-icon icon="lucide:user" class="text-xl"></iconify-icon>
+            </Link>
             <button className="lg:hidden text-white text-2xl" onClick={() => setIsOpen(!isOpen)}>
               <iconify-icon icon={isOpen ? "lucide:x" : "lucide:menu"}></iconify-icon>
             </button>
@@ -76,6 +77,10 @@ const Navbar = () => {
           ))}
           <Link to="/events" className="mt-4 text-center bg-green-700 hover:bg-green-600 text-white px-6 py-3 rounded text-xs font-bold tracking-wider transition-all uppercase" onClick={() => setIsOpen(false)}>
             Réserver / Acheter
+          </Link>
+          <Link to="/admin/login" className="mt-2 text-center text-gray-400 hover:text-white text-xs font-bold tracking-widest transition-all uppercase flex items-center justify-center gap-2" onClick={() => setIsOpen(false)}>
+            <iconify-icon icon="lucide:user" class="text-lg"></iconify-icon>
+            Espace Staff
           </Link>
         </div>
       )}

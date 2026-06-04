@@ -1,8 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ScrollReveal from '../common/ScrollReveal';
 import OptimizedImage from '../common/OptimizedImage';
 
 const Newsletter = () => {
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState(null); // null | 'loading' | 'success' | 'error'
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!email || !email.includes('@')) return;
+
+    setStatus('loading');
+    try {
+      const res = await fetch('/api/newsletters', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+      if (res.ok) {
+        setStatus('success');
+        setEmail('');
+        setTimeout(() => setStatus(null), 4000);
+      } else {
+        const data = await res.json();
+        if (data.error && data.error.includes('UNIQUE')) {
+          setStatus('already');
+          setTimeout(() => setStatus(null), 4000);
+        } else {
+          setStatus('error');
+        }
+      }
+    } catch (err) {
+      setStatus('error');
+      setTimeout(() => setStatus(null), 4000);
+    }
+  };
+
   return (
     <section className="py-16 relative overflow-hidden">
       <div className="absolute inset-0 bg-green-950/40"></div>
@@ -29,15 +62,37 @@ const Newsletter = () => {
             </div>
 
             <div className="w-full lg:w-auto">
-              <form className="flex w-full md:w-[500px]">
-                <input type="email" placeholder="Votre adresse email" className="flex-1 bg-black/60 border border-white/10 rounded-l-lg px-6 py-4 focus:outline-none focus:border-green-600 text-white" />
-                <button className="bg-yellow-500 hover:bg-yellow-400 text-black font-extrabold uppercase px-8 rounded-r-lg transition-colors">
-                  S'INSCRIRE
+              <form onSubmit={handleSubmit} className="flex w-full md:w-[500px]">
+                <input 
+                  type="email" 
+                  placeholder="Votre adresse email" 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="flex-1 bg-black/60 border border-white/10 rounded-l-lg px-6 py-4 focus:outline-none focus:border-green-600 text-white" 
+                />
+                <button 
+                  type="submit"
+                  disabled={status === 'loading'}
+                  className="bg-yellow-500 hover:bg-yellow-400 text-black font-extrabold uppercase px-8 rounded-r-lg transition-colors disabled:opacity-50"
+                >
+                  {status === 'loading' ? '...' : "S'INSCRIRE"}
                 </button>
               </form>
-              <p className="text-[10px] uppercase tracking-widest text-gray-400 mt-4 text-center lg:text-left flex items-center justify-center lg:justify-start gap-2">
-                Ou rejoignez notre chaîne WhatsApp <iconify-icon icon="logos:whatsapp-icon" className="text-base"></iconify-icon>
-              </p>
+              {status === 'success' && (
+                <p className="text-green-400 text-sm mt-3 text-center lg:text-left font-bold">✅ Inscription réussie ! Bienvenue dans la famille.</p>
+              )}
+              {status === 'already' && (
+                <p className="text-yellow-400 text-sm mt-3 text-center lg:text-left font-bold">⚠️ Cet email est déjà inscrit.</p>
+              )}
+              {status === 'error' && (
+                <p className="text-red-400 text-sm mt-3 text-center lg:text-left font-bold">❌ Erreur, veuillez réessayer.</p>
+              )}
+              {!status && (
+                <p className="text-[10px] uppercase tracking-widest text-gray-400 mt-4 text-center lg:text-left flex items-center justify-center lg:justify-start gap-2">
+                  Ou rejoignez notre chaîne WhatsApp <iconify-icon icon="logos:whatsapp-icon" className="text-base"></iconify-icon>
+                </p>
+              )}
             </div>
           </div>
         </ScrollReveal>

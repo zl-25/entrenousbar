@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import './Gallery.css';
 import Lightbox from '../components/common/Lightbox';
+import { useAdmin } from '../contexts/AdminContext';
 
-const GALLERY_IMAGES = [
+// Images locales existantes
+const LOCAL_IMAGES = [
   '1000397653.jpg', '1000397654.jpg', '1000397655.jpg', '1000397656.jpg', '1000397657.jpg',
   '1000397658.jpg', '1000397659.jpg', '1000397664.jpg', '1000397665.jpg', '1000397666.jpg',
   '1000397667.jpg', '1000397668.jpg', '1000397669.jpg', '1000397670.jpg', '1000397671.jpg',
@@ -10,19 +12,28 @@ const GALLERY_IMAGES = [
   '1000397677.jpg', '1000397678.jpg', '1000397679.jpg', '1000397680.jpg', '1000397681.jpg',
   '1000397682.jpg', '1000397684.jpg', '1000397685.jpg', '1000397686.jpg'
 ].map((filename, i) => ({
-  id: i,
+  id: `local-${i}`,
   url: `/${filename}`
 }));
 
 const Gallery = () => {
   const [activeIndex, setActiveIndex] = useState(null);
+  const { gallery } = useAdmin();
+
+  // Fusionner les images uploadées depuis l'admin avec les images locales
+  const uploadedImages = (gallery || []).map(img => ({
+    id: `upload-${img.id}`,
+    url: img.url
+  }));
+
+  const allImages = [...uploadedImages, ...LOCAL_IMAGES];
 
   const handlePrev = () => {
-    setActiveIndex((prev) => (prev === 0 ? GALLERY_IMAGES.length - 1 : prev - 1));
+    setActiveIndex((prev) => (prev === 0 ? allImages.length - 1 : prev - 1));
   };
 
   const handleNext = () => {
-    setActiveIndex((prev) => (prev === GALLERY_IMAGES.length - 1 ? 0 : prev + 1));
+    setActiveIndex((prev) => (prev === allImages.length - 1 ? 0 : prev + 1));
   };
 
   return (
@@ -39,7 +50,7 @@ const Gallery = () => {
         </div>
 
         <div className="masonry-grid">
-          {GALLERY_IMAGES.map((img, idx) => (
+          {allImages.map((img, idx) => (
             <div 
               key={img.id} 
               className="masonry-item"
@@ -65,7 +76,7 @@ const Gallery = () => {
       </div>
 
       <Lightbox 
-        images={GALLERY_IMAGES}
+        images={allImages}
         activeIndex={activeIndex}
         onClose={() => setActiveIndex(null)}
         onPrev={handlePrev}

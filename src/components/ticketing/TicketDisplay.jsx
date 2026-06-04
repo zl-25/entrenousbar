@@ -27,6 +27,28 @@ const TicketDisplay = ({
           timestamp: new Date().toISOString()
         });
         setQrCode(qr);
+
+        // Save ticket to database
+        try {
+          await fetch('/api/tickets', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              reference,
+              event_id: event.id,
+              event_title: event.title,
+              ticket_type: ticket.id,
+              ticket_name: ticket.name,
+              price: ticket.price,
+              buyer_name: formData.name,
+              buyer_email: formData.email,
+              buyer_phone: formData.phone || '',
+              qr_data: JSON.stringify({ id: reference, ticketId: ticket.id, eventId: event.id, email: formData.email })
+            })
+          });
+        } catch (err) {
+          console.warn('Impossible de sauvegarder le ticket en base:', err);
+        }
       } catch (err) {
         console.error('Erreur QR code:', err);
       } finally {

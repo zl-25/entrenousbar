@@ -29,18 +29,7 @@
     Permissions-Policy = "geolocation=(), microphone=(), camera=()"
     Strict-Transport-Security = "max-age=31536000; includeSubDomains"
 
-# SPA Redirect - Seulement pour les vraies routes React
-[[redirects]]
-  from = "/events/*"
-  to = "/events/1"
-  status = 200
-
-[[redirects]]
-  from = "/reservation"
-  to = "/"
-  status = 200
-
-# Catch-all pour SPA (DOIT être en dernier)
+# SPA Redirect Catch-all pour React Router
 [[redirects]]
   from = "/*"
   to = "/index.html"

@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { getEventById } from '../data/events';
+import { useAdmin } from '../contexts/AdminContext';
 import OptimizedImage from '../components/common/OptimizedImage';
 
 const EventDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { events } = useAdmin();
   
-  const event = getEventById(id);
+  const event = events.find(e => e.id === parseInt(id));
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -36,8 +37,8 @@ const EventDetail = () => {
             <OptimizedImage
               src={event.image}
               alt={event.title}
-              className="w-full h-full sm:scale-105 opacity-60 sm:opacity-100"
-              objectFit="cover"
+              className="w-full h-full sm:scale-105 opacity-60 sm:opacity-100 object-contain sm:object-cover"
+              objectFit="inherit"
               priority={true}
             />
           </div>

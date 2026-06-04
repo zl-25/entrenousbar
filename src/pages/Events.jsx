@@ -1,15 +1,35 @@
 import React, { useState } from 'react';
 import EventCard from '../components/common/EventCard';
-import { EVENTS } from '../data/events';
+import { useAdmin } from '../contexts/AdminContext';
 
 const FILTERS = ['TOUS', 'JUIN', 'JUIL.', 'AOÛT'];
 
+// Mapping des numéros de mois vers les labels des filtres
+const MONTH_NUM_TO_FILTER = {
+  6: 'JUIN', 7: 'JUIL.', 8: 'AOÛT'
+};
+// Mapping des noms complets de mois vers les labels des filtres  
+const MONTH_NAME_TO_FILTER = {
+  'JUIN': 'JUIN', 'JUILLET': 'JUIL.', 'AOÛT': 'AOÛT'
+};
+
 const Events = () => {
   const [activeFilter, setActiveFilter] = useState('TOUS');
+  const { events } = useAdmin();
 
   const filteredEvents = activeFilter === 'TOUS' 
-    ? EVENTS 
-    : EVENTS.filter(e => e.month === activeFilter);
+    ? events 
+    : events.filter(e => {
+      // Essayer d'extraire le mois depuis la date ISO
+      const dateObj = new Date(e.date);
+      if (!isNaN(dateObj.getTime())) {
+        const monthFilter = MONTH_NUM_TO_FILTER[dateObj.getMonth() + 1];
+        return monthFilter === activeFilter;
+      }
+      // Fallback: comparer avec le champ month (anciens événements)
+      const mappedFilter = MONTH_NAME_TO_FILTER[e.month];
+      return mappedFilter === activeFilter || e.month === activeFilter;
+    });
 
   return (
     <div className="min-h-screen bg-[#050505] pt-28 sm:pt-32 pb-20">

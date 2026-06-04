@@ -1,8 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import OptimizedImage from '../common/OptimizedImage';
+import { useAdmin } from '../../contexts/AdminContext';
 
 const Footer = () => {
+  const { siteSettings } = useAdmin();
+
   return (
     <footer className="bg-black pt-20 pb-10 border-t border-white/5">
       <div className="max-w-7xl mx-auto px-4 lg:px-8">
@@ -23,8 +26,8 @@ const Footer = () => {
               Entre Nous Bar, le bar plein air qui vous accueille dans une ambiance chaleureuse et festive.
             </p>
             <div className="flex gap-4">
-              <a href="#" id="footer-fb" className="text-xl text-gray-400 hover:text-white transition-colors"><iconify-icon icon="lucide:facebook"></iconify-icon></a>
-              <a href="#" id="footer-ig" className="text-xl text-gray-400 hover:text-white transition-colors"><iconify-icon icon="lucide:instagram"></iconify-icon></a>
+              <a href={siteSettings.facebook} target="_blank" rel="noreferrer" id="footer-fb" className="text-xl text-gray-400 hover:text-white transition-colors"><iconify-icon icon="lucide:facebook"></iconify-icon></a>
+              <a href={siteSettings.instagram} target="_blank" rel="noreferrer" id="footer-ig" className="text-xl text-gray-400 hover:text-white transition-colors"><iconify-icon icon="lucide:instagram"></iconify-icon></a>
               <a href="#" id="footer-tt" className="text-xl text-gray-400 hover:text-white transition-colors"><iconify-icon icon="ri:tiktok-fill"></iconify-icon></a>
             </div>
           </div>
@@ -50,15 +53,15 @@ const Footer = () => {
               </li>
               <li className="flex items-start gap-3">
                 <iconify-icon icon="lucide:phone" className="text-green-500 mt-1"></iconify-icon>
-                <span>+241 62 12 34 56</span>
+                <span>{siteSettings.phone}</span>
               </li>
               <li className="flex items-start gap-3">
                 <iconify-icon icon="lucide:mail" className="text-green-500 mt-1"></iconify-icon>
-                <span>contact@entrenousbar.ga</span>
+                <span>{siteSettings.email}</span>
               </li>
               <li className="flex items-start gap-3">
                 <iconify-icon icon="lucide:clock" className="text-green-500 mt-1"></iconify-icon>
-                <span>Ouvert tous les jours<br />18H00 - 02H00</span>
+                <span className="whitespace-pre-line">{siteSettings.hours}</span>
               </li>
             </ul>
           </div>
@@ -78,8 +81,8 @@ const Footer = () => {
             </div>
             <p className="mt-8 text-xs text-gray-500 uppercase tracking-widest">@entrenousbar</p>
             <div className="mt-2 flex gap-4">
-              <a href="#" className="text-gray-500 hover:text-white transition-colors"><iconify-icon icon="lucide:facebook"></iconify-icon></a>
-              <a href="#" className="text-gray-500 hover:text-white transition-colors"><iconify-icon icon="lucide:instagram"></iconify-icon></a>
+              <a href={siteSettings.facebook} target="_blank" rel="noreferrer" className="text-gray-500 hover:text-white transition-colors"><iconify-icon icon="lucide:facebook"></iconify-icon></a>
+              <a href={siteSettings.instagram} target="_blank" rel="noreferrer" className="text-gray-500 hover:text-white transition-colors"><iconify-icon icon="lucide:instagram"></iconify-icon></a>
               <a href="#" className="text-gray-500 hover:text-white transition-colors"><iconify-icon icon="ri:tiktok-fill"></iconify-icon></a>
             </div>
           </div>

@@ -1,23 +1,31 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const EventCard = ({ id, title, type, date, time, price, cardImage, neonClass }) => {
+const EventCard = ({ id, title, type, date, time, price, image, cardImage, neonClass, day: dayProp, month: monthProp }) => {
+  // Parser la date de manière robuste - supporte les dates ISO (ex: "2026-06-22") 
+  // et fallback vers les champs day/month si la date ISO échoue
+  let day, month;
   const dateObj = new Date(date);
-  const day = dateObj.getDate();
-  const month = dateObj.toLocaleString('fr-FR', { month: 'short' }).toUpperCase();
+  if (!isNaN(dateObj.getTime())) {
+    day = dateObj.getDate();
+    month = dateObj.toLocaleString('fr-FR', { month: 'short' }).toUpperCase();
+  } else {
+    // Fallback: utiliser les props day/month directement (anciens événements)
+    day = dayProp || '?';
+    month = monthProp ? monthProp.substring(0, 4).toUpperCase() : '';
+  }
+  const imgSrc = image || cardImage;
 
   return (
     <div className="group relative bg-white/[0.03] backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_20px_60px_rgba(21,128,61,0.15)] hover:border-white/10 flex flex-col">
       {/* Full-card clickable overlay for navigating to details */}
       <Link to={`/events/${id}`} className="absolute inset-0 z-10" aria-label={`Voir les détails de ${title}`} />
       
-      {/* Image Section */}
-      <div className="relative aspect-[4/5] bg-black overflow-hidden border-b border-white/5">
+      <div className="relative aspect-[4/3] sm:aspect-[4/5] bg-[#0A0A0A] overflow-hidden border-b border-white/5 flex items-center justify-center">
         <img
-          src={cardImage}
+          src={imgSrc}
           alt={title}
-          className="w-full h-full transition-transform duration-500 group-hover:scale-110"
-          style={{ objectFit: 'cover' }}
+          className="w-full h-full transition-transform duration-500 group-hover:scale-110 object-contain sm:object-cover"
           loading="lazy"
           decoding="async"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"

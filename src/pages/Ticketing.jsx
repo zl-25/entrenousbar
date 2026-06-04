@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { getEventById } from '../data/events';
+import { useAdmin } from '../contexts/AdminContext';
 import { jsPDF } from 'jspdf';
+import { toast } from 'react-hot-toast';
 import { validateForm, ticketingSchema } from '../utils/validationSchemas';
 import TicketDisplay from '../components/ticketing/TicketDisplay';
 import OptimizedImage from '../components/common/OptimizedImage';
@@ -24,7 +25,8 @@ const STEPS = [
 const Ticketing = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const event = getEventById(id);
+  const { events } = useAdmin();
+  const event = events.find(e => e.id === parseInt(id));
 
   const [step, setStep] = useState(1);
   const [selectedTicket, setSelectedTicket] = useState(TICKETS[0].id);
@@ -170,7 +172,7 @@ const Ticketing = () => {
         }
       } catch (error) {
         console.error(error);
-        alert('Une erreur est survenue lors de l\'initialisation du paiement. Veuillez réessayer.');
+        toast.error("Une erreur est survenue lors de l'initialisation du paiement. Veuillez réessayer.");
         setIsProcessing(false);
       }
       return;
@@ -260,7 +262,7 @@ const Ticketing = () => {
       pdf.save(`Ticket_EntreNousBar_${reference}.pdf`);
     } catch (err) {
       console.error('Erreur PDF:', err);
-      alert('Erreur lors de la génération du ticket PDF.');
+      toast.error("Erreur lors de la génération du ticket PDF.");
     } finally {
       setIsDownloading(false);
     }
