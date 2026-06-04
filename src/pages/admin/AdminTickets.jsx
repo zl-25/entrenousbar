@@ -2,42 +2,54 @@ import React, { useState, useEffect } from 'react';
 import { Search, QrCode, CheckCircle, XCircle, Camera } from 'lucide-react';
 import { Scanner } from '@yudiel/react-qr-scanner';
 import toast from 'react-hot-toast';
+import { supabase } from '../../lib/supabaseClient';
 
 const AdminTickets = () => {
   const [ticketCode, setTicketCode] = useState('');
   const [scanResult, setScanResult] = useState(null);
   const [cameraActive, setCameraActive] = useState(false);
 
-  // Vérifier un ticket via l'API backend
+  // Vérifier un ticket via Supabase
   const verifyTicket = async (code) => {
     if (!code) return;
     try {
-      const res = await fetch(`/api/tickets/verify/${encodeURIComponent(code)}`);
-      const data = await res.json();
-      if (data.valid) {
+      // Chercher le ticket dans Supabase
+      const { data: ticket, error } = await supabase
+        .from('tickets')
+        .select('*')
+        .eq('reference', code)
+        .single();
+
+      if (error || !ticket) {
+        setScanResult({
+          success: false,
+          error: 'Ticket introuvable dans la base de données'
+        });
+        toast.error('Ticket invalide !');
+      } else if (ticket.status === 'used') {
+        setScanResult({
+          success: false,
+          error: `Ce ticket a déjà été utilisé le ${new Date(ticket.scanned_at).toLocaleString('fr-FR')}`
+        });
+        toast.error('Ticket déjà utilisé !');
+      } else {
+        // Marquer comme utilisé
+        await supabase
+          .from('tickets')
+          .update({ status: 'used', scanned_at: new Date().toISOString() })
+          .eq('id', ticket.id);
+
         setScanResult({
           success: true,
           ticket: {
-            code: data.ticket.reference,
-            event: data.ticket.event_title,
-            type: data.ticket.ticket_type,
-            buyer: data.ticket.buyer_name,
+            code: ticket.reference,
+            event: ticket.event_title,
+            type: ticket.ticket_type,
+            buyer: ticket.buyer_name,
             status: 'Validé ✓'
           }
         });
         toast.success('Ticket validé avec succès !');
-      } else if (data.alreadyUsed) {
-        setScanResult({
-          success: false,
-          error: `Ce ticket a déjà été utilisé le ${new Date(data.scanned_at).toLocaleString('fr-FR')}`
-        });
-        toast.error('Ticket déjà utilisé !');
-      } else {
-        setScanResult({
-          success: false,
-          error: data.error || 'Ticket invalide ou non reconnu'
-        });
-        toast.error('Ticket invalide !');
       }
     } catch (err) {
       console.error(err);

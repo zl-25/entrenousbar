@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ScrollReveal from '../common/ScrollReveal';
 import OptimizedImage from '../common/OptimizedImage';
+import { supabase } from '../../lib/supabaseClient';
 
 const Newsletter = () => {
   const [email, setEmail] = useState('');
@@ -12,25 +13,24 @@ const Newsletter = () => {
 
     setStatus('loading');
     try {
-      const res = await fetch('/api/newsletters', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
-      });
-      if (res.ok) {
-        setStatus('success');
-        setEmail('');
-        setTimeout(() => setStatus(null), 4000);
-      } else {
-        const data = await res.json();
-        if (data.error && data.error.includes('UNIQUE')) {
+      const { error } = await supabase
+        .from('newsletters')
+        .insert([{ email }]);
+
+      if (error) {
+        if (error.code === '23505' || (error.message && error.message.includes('unique'))) {
           setStatus('already');
           setTimeout(() => setStatus(null), 4000);
         } else {
-          setStatus('error');
+          throw error;
         }
+      } else {
+        setStatus('success');
+        setEmail('');
+        setTimeout(() => setStatus(null), 4000);
       }
     } catch (err) {
+      console.error('Newsletter error:', err);
       setStatus('error');
       setTimeout(() => setStatus(null), 4000);
     }
