@@ -143,24 +143,20 @@ const EventDetail = () => {
                               <div className="flex justify-between items-center mb-6">
                                   <div>
                                       <p className="text-xs text-gray-500 uppercase font-bold tracking-widest">Prix du ticket</p>
-                                      {event.priceNum > 0 ? (
-                                        <p className="text-3xl font-bold text-white">{event.priceNum.toLocaleString('fr-FR')} <span className="text-sm">FCFA</span></p>
-                                      ) : (
-                                        <p className="text-3xl font-bold text-white uppercase text-green-500">Gratuit</p>
-                                      )}
+                                      <p className="text-3xl font-bold text-white uppercase text-green-500">{event.price}</p>
                                   </div>
                                   <div className="text-right text-xs text-green-500 font-bold uppercase tracking-tighter">
-                                      {event.priceNum > 0 ? 'Places limitées' : 'Entrée Libre'}
+                                      {(event.tickets && event.tickets.length > 0) ? 'Places limitées' : 'Entrée Libre'}
                                   </div>
                               </div>
                               
-                              {event.priceNum > 0 && (
+                              {(event.tickets && event.tickets.length > 0) && (
                                 <Link to={`/events/${event.id}/tickets`} 
                                    className="block w-full text-center bg-green-700 hover:bg-green-600 text-white font-bold py-5 rounded-xl uppercase tracking-widest transition-all shadow-[0_10px_30px_rgba(21,128,61,0.3)]">
                                     Acheter un ticket
                                 </Link>
                               )}
-                              {event.priceNum > 0 && (
+                              {(event.tickets && event.tickets.length > 0) && (
                                 <p className="text-[10px] text-center text-gray-500 mt-4 uppercase font-bold tracking-widest">
                                     Réservez maintenant pour garantir votre entrée
                                 </p>

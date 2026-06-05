@@ -8,8 +8,9 @@ const AdminEvents = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState({
-    title: '', time: '', type: 'Clubbing', price: 'Gratuit', image: '',
+    title: '', time: '', type: 'Soirée Clubbing', price: 'Gratuit', image: '',
     day: '', month: '', year: '', endTime: '', priceNum: 0, neonClass: 'neon-text', description: ''
   });
 
@@ -51,13 +52,48 @@ const AdminEvents = () => {
       djs: [] // Pour faire simple on passe un tableau vide de djs
     };
     
-    await addEvent(formattedData);
-    toast.success("Événement créé avec succès !");
+    if (editingId) {
+      await updateEvent(editingId, formattedData);
+      toast.success("Événement mis à jour avec succès !");
+    } else {
+      await addEvent(formattedData);
+      toast.success("Événement créé avec succès !");
+    }
+    
     setIsModalOpen(false);
+    setEditingId(null);
     setFormData({ 
-      title: '', time: '', type: 'Clubbing', price: 'Gratuit', image: '',
+      title: '', time: '', type: 'Soirée Clubbing', price: 'Gratuit', image: '',
       day: '', month: '', year: '', endTime: '', priceNum: 0, neonClass: 'neon-text', description: ''
     });
+  };
+
+  const handleEditClick = (evt) => {
+    setEditingId(evt.id);
+    setFormData({
+      title: evt.title || '',
+      time: evt.time || '',
+      type: evt.type || 'Soirée Clubbing',
+      price: evt.price || 'Gratuit',
+      image: evt.image || '',
+      day: evt.day || '',
+      month: evt.month || '',
+      year: evt.year || '',
+      endTime: evt.endTime || '',
+      priceNum: evt.priceNum || 0,
+      neonClass: evt.neonClass || 'neon-text',
+      description: evt.description ? (Array.isArray(evt.description) ? evt.description.join('\n') : evt.description) : ''
+    });
+    setIsModalOpen(true);
+  };
+
+  const openCreateModal = () => {
+    setEditingId(null);
+    setFormData({ 
+      title: '', time: '', type: 'Soirée Clubbing', price: 'Gratuit', image: '',
+      day: '', month: '', year: '', endTime: '', priceNum: 0, neonClass: 'neon-text', description: ''
+    });
+    setIsModalOpen(true);
   };
 
   return (
@@ -67,7 +103,7 @@ const AdminEvents = () => {
           <h1 className="text-2xl font-bold text-white mb-1">Événements</h1>
           <p className="text-sm text-[#8A8D98]">Gérez tous les événements de l'Entre Nous Bar</p>
         </div>
-        <button onClick={() => setIsModalOpen(true)} className="bg-[#00E35F] hover:bg-green-400 text-black font-bold py-2.5 px-4 rounded-xl transition-all shadow-[0_0_15px_rgba(0,227,95,0.2)] flex items-center gap-2">
+        <button onClick={openCreateModal} className="bg-[#00E35F] hover:bg-green-400 text-black font-bold py-2.5 px-4 rounded-xl transition-all shadow-[0_0_15px_rgba(0,227,95,0.2)] flex items-center gap-2">
           <Plus size={18} />
           Créer un événement
         </button>
@@ -121,7 +157,7 @@ const AdminEvents = () => {
                   </td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex items-center justify-end gap-2">
-                      <button onClick={() => toast.success("L'édition sera bientôt disponible. Pour l'instant, supprimez et recréez l'événement.", { icon: '🚧' })} className="p-2 hover:bg-[#2A2D36] rounded-lg transition-colors text-white" title="Modifier">
+                      <button onClick={() => handleEditClick(evt)} className="p-2 hover:bg-[#2A2D36] rounded-lg transition-colors text-white" title="Modifier">
                         <Edit size={16} />
                       </button>
                       <button 
@@ -155,7 +191,7 @@ const AdminEvents = () => {
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-[#1A1D24] border border-[#2A2D36] rounded-2xl w-full max-w-2xl overflow-y-auto max-h-[90vh]">
             <div className="p-4 border-b border-[#2A2D36] flex justify-between items-center bg-[#111317] sticky top-0 z-10">
-              <h3 className="text-lg font-bold text-white">Créer un événement (Complet)</h3>
+              <h3 className="text-lg font-bold text-white">{editingId ? "Modifier l'événement" : "Créer un événement (Complet)"}</h3>
               <button onClick={() => setIsModalOpen(false)} className="text-[#8A8D98] hover:text-white transition-colors">
                 <X size={20} />
               </button>
@@ -253,7 +289,7 @@ const AdminEvents = () => {
               
               <div className="pt-4 border-t border-[#2A2D36] flex justify-end gap-3">
                 <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 text-white hover:bg-[#2A2D36] rounded-lg transition-colors">Annuler</button>
-                <button type="submit" disabled={uploading} className="px-4 py-2 bg-[#00E35F] text-black font-bold rounded-lg hover:bg-green-400 transition-colors disabled:opacity-50">Enregistrer l'événement</button>
+                <button type="submit" disabled={uploading} className="px-4 py-2 bg-[#00E35F] text-black font-bold rounded-lg hover:bg-green-400 transition-colors disabled:opacity-50">{editingId ? "Mettre à jour" : "Enregistrer"} l'événement</button>
               </div>
             </form>
           </div>
