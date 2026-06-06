@@ -31,7 +31,7 @@ const AdminNewsletters = () => {
           <h1 className="text-2xl font-bold text-white mb-1">Newsletters</h1>
           <p className="text-sm text-[#8A8D98]">Gérez vos abonnés et campagnes d'emailing</p>
         </div>
-        <button onClick={() => setIsModalOpen(true)} className="bg-[#00E35F] hover:bg-green-400 text-black font-bold py-2.5 px-4 rounded-xl transition-all shadow-[0_0_15px_rgba(0,227,95,0.2)] flex items-center gap-2">
+        <button type="button" onClick={() => setIsModalOpen(true)} className="bg-[#00E35F] hover:bg-green-400 text-black font-bold py-2.5 px-4 rounded-xl transition-all shadow-[0_0_15px_rgba(0,227,95,0.2)] flex items-center gap-2">
           <Send size={18} />
           Créer une campagne
         </button>
@@ -42,16 +42,16 @@ const AdminNewsletters = () => {
           <div className="bg-[#1A1D24] border border-[#2A2D36] rounded-2xl w-full max-w-2xl p-6">
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-xl font-bold text-white">Nouvelle Campagne Email</h3>
-              <button onClick={() => setIsModalOpen(false)} className="text-[#8A8D98] hover:text-white"><X size={20}/></button>
+              <button type="button" onClick={() => setIsModalOpen(false)} className="text-[#8A8D98] hover:text-white" aria-label="Fermer"><X size={20}/></button>
             </div>
             <form onSubmit={handleCreateCampaign} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-[#8A8D98] mb-1">Objet de l'email</label>
-                <input required type="text" value={newCampaign.subject} onChange={e => setNewCampaign({...newCampaign, subject: e.target.value})} className="w-full bg-[#111317] border border-[#2A2D36] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#00E35F]" placeholder="Ex: Ne manquez pas notre soirée spéciale ce vendredi !" />
+                <label htmlFor="campaign-subject" className="block text-sm font-medium text-[#8A8D98] mb-1">Objet de l'email</label>
+                <input id="campaign-subject" required type="text" value={newCampaign.subject} onChange={e => setNewCampaign({...newCampaign, subject: e.target.value})} className="w-full bg-[#111317] border border-[#2A2D36] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#00E35F]" placeholder="Ex: Ne manquez pas notre soirée spéciale ce vendredi !" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#8A8D98] mb-1">Contenu du message</label>
-                <textarea required rows="8" value={newCampaign.content} onChange={e => setNewCampaign({...newCampaign, content: e.target.value})} className="w-full bg-[#111317] border border-[#2A2D36] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#00E35F]" placeholder="Rédigez votre message ici..."></textarea>
+                <label htmlFor="campaign-content" className="block text-sm font-medium text-[#8A8D98] mb-1">Contenu du message</label>
+                <textarea id="campaign-content" required rows="8" value={newCampaign.content} onChange={e => setNewCampaign({...newCampaign, content: e.target.value})} className="w-full bg-[#111317] border border-[#2A2D36] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#00E35F]" placeholder="Rédigez votre message ici..."></textarea>
               </div>
               <div className="text-xs text-[#8A8D98] mb-4">
                 Cet email sera envoyé à {newsletters.length} abonnés.

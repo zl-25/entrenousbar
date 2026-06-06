@@ -3,11 +3,29 @@ import { Search, Users, Phone, Mail } from 'lucide-react';
 import { useAdmin } from '../../contexts/AdminContext';
 
 const AdminClients = () => {
-  const { reservations } = useAdmin();
+  const { reservations, tickets } = useAdmin();
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Construire la liste clients à partir des réservations (source de données réelle)
-  const clients = reservations
+  // Combiner les réservations et les tickets pour obtenir tous les clients
+  const allClientData = [
+    ...reservations.map(r => ({
+      name: r.name,
+      phone: r.phone,
+      email: r.email,
+      type: r.type || 'Réservation',
+      created_at: r.created_at
+    })),
+    ...(tickets || []).map(t => ({
+      name: t.buyer_name,
+      phone: t.buyer_phone,
+      email: t.buyer_email,
+      type: `Ticket: ${t.ticket_name || t.ticket_type || 'Standard'}`,
+      created_at: t.created_at
+    }))
+  ];
+
+  // Construire la liste unique des clients
+  const clients = allClientData
     .filter(r => r.name && r.name.trim() !== '')
     .reduce((acc, r) => {
       const existing = acc.find(c => c.name === r.name);
@@ -15,10 +33,12 @@ const AdminClients = () => {
         existing.visits += 1;
         if (new Date(r.created_at) > new Date(existing.lastVisit)) {
           existing.lastVisit = r.created_at;
+          // Mettre à jour le type avec la dernière action
+          existing.type = r.type;
         }
       } else {
         acc.push({
-          id: r.id,
+          id: r.id || `${r.name}-${r.created_at}`,
           name: r.name,
           phone: r.phone || '—',
           email: r.email || '—',
@@ -40,7 +60,7 @@ const AdminClients = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-2xl font-bold text-white mb-1">Clients</h1>
-          <p className="text-sm text-[#8A8D98]">Base de données clients extraite des réservations</p>
+          <p className="text-sm text-[#8A8D98]">Base de données clients (Acheteurs de tickets & Réservations)</p>
         </div>
         <div className="bg-[#1A1D24] border border-[#2A2D36] rounded-xl px-4 py-3 flex items-center gap-3">
           <Users size={20} className="text-[#00E35F]" />
@@ -59,6 +79,7 @@ const AdminClients = () => {
             </div>
             <input
               type="text"
+              aria-label="Rechercher un client"
               placeholder="Rechercher un client..."
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
@@ -115,7 +136,7 @@ const AdminClients = () => {
                   <td colSpan="5" className="px-6 py-12 text-center">
                     <Users size={32} className="mx-auto mb-3 opacity-20" />
                     <p>Aucun client trouvé</p>
-                    <p className="text-xs mt-1">Les clients apparaissent automatiquement via les réservations.</p>
+                    <p className="text-xs mt-1">Les clients apparaissent automatiquement via les achats de tickets et les réservations.</p>
                   </td>
                 </tr>
               )}

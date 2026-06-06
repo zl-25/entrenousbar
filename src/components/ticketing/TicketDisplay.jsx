@@ -11,14 +11,16 @@ const TicketDisplay = ({
   isLoading = false 
 }) => {
   const [qrCode, setQrCode] = useState(null);
-  const [qrLoading, setQrLoading] = useState(true);
+  const [qrStatus, setQrStatus] = useState('loading');
 
   // Utiliser useState pour stabiliser la référence et éviter la boucle de re-rendu
   const [reference] = useState(() => `ENB-${event.id}-${ticket.id}-${Date.now().toString().slice(-5)}`);
 
   useEffect(() => {
+    let isCancelled = false;
+
     const generateQR = async () => {
-      setQrLoading(true);
+      setQrStatus('loading');
       try {
         const qr = await generateTicketQRCode({
           id: reference,
@@ -27,6 +29,7 @@ const TicketDisplay = ({
           email: formData.email,
           timestamp: new Date().toISOString()
         });
+        if (isCancelled) return;
         setQrCode(qr);
 
         // Save ticket to Supabase
@@ -46,14 +49,18 @@ const TicketDisplay = ({
         } catch (err) {
           console.warn('Impossible de sauvegarder le ticket en base:', err);
         }
+        if (!isCancelled) setQrStatus('ready');
       } catch (err) {
         console.error('Erreur QR code:', err);
-      } finally {
-        setQrLoading(false);
+        if (!isCancelled) setQrStatus('error');
       }
     };
     generateQR();
-  }, [reference, ticket.id, event.id, formData.email]);
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [reference, ticket.id, ticket.name, ticket.price, event.id, event.title, formData.email, formData.name, formData.phone]);
 
   return (
     <div className="bg-[#050505] border border-white/5 rounded-3xl p-6 md:p-10 overflow-hidden relative">
@@ -115,7 +122,7 @@ const TicketDisplay = ({
 
             {/* QR Code */}
             <div className="flex flex-col items-center justify-center p-4 bg-white rounded-2xl">
-              {qrLoading ? (
+              {qrStatus === 'loading' ? (
                 <div className="w-40 h-40 flex items-center justify-center">
                   <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-green-600"></div>
                 </div>
@@ -146,8 +153,9 @@ const TicketDisplay = ({
 
             <div className="flex flex-col gap-3" data-html2canvas-ignore="true">
               <button 
+                type="button"
                 onClick={() => onDownload(qrCode, reference)}
-                disabled={isLoading || qrLoading}
+                disabled={isLoading || qrStatus === 'loading'}
                 className="w-full bg-green-700 hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all uppercase text-xs tracking-widest text-white"
               >
                 <iconify-icon icon="lucide:download"></iconify-icon>

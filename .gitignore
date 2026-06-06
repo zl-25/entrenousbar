@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# React Doctor and NPM cache
+.npm-cache/
+.npm-cache-react-doctor/
+.react-doctor-before.json
+.react-doctor-after.json
+

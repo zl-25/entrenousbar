@@ -105,6 +105,7 @@ const Reservation = () => {
             <div className="flex justify-between"><span className="text-gray-500">Heure</span><span className="font-bold">{selectedTime}</span></div>
           </div>
           <button
+            type="button"
             onClick={() => {
               setSubmitted(false);
               setSelectedDate(null);

@@ -20,6 +20,7 @@ const EventDetail = () => {
         <h1 className="text-4xl md:text-6xl font-bold clash text-white mb-6">ÉVÉNEMENT INTROUVABLE</h1>
         <p className="text-gray-400 mb-8 max-w-md">L'événement que vous recherchez n'existe pas ou n'est plus disponible.</p>
         <button 
+          type="button"
           onClick={() => navigate('/events')}
           className="bg-green-700 hover:bg-green-600 text-white px-8 py-3 rounded text-sm font-bold tracking-wider transition-all uppercase"
         >

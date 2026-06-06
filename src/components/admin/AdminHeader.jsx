@@ -13,6 +13,7 @@ const AdminHeader = ({ toggleSidebar }) => {
     <header className="h-16 sm:h-20 border-b border-[#2A2D36] bg-[#111317]/50 backdrop-blur-sm flex items-center justify-between px-4 sm:px-6 lg:px-8 sticky top-0 z-20">
       <div className="flex items-center gap-2 sm:gap-4">
         <button 
+          type="button"
           onClick={toggleSidebar}
           className="text-[#8A8D98] hover:text-white p-2 rounded-lg lg:hidden focus:outline-none focus:ring-2 focus:ring-[#00E35F] transition-colors" 
           aria-label="Ouvrir le menu"
@@ -26,11 +27,12 @@ const AdminHeader = ({ toggleSidebar }) => {
           </div>
           <input 
             type="text" 
+            aria-label="Rechercher dans l'administration"
             placeholder="Rechercher..." 
             className="block w-full pl-10 pr-3 py-2 border border-[#2A2D36] rounded-lg leading-5 bg-[#1A1D24] text-gray-300 placeholder-[#8A8D98] focus:outline-none focus:border-[#00E35F] focus:ring-1 focus:ring-[#00E35F] text-xs sm:text-sm transition-all"
           />
         </div>
-        <button className="text-[#8A8D98] hover:text-white p-2 rounded-lg sm:hidden focus:outline-none focus:ring-2 focus:ring-[#00E35F]">
+        <button type="button" className="text-[#8A8D98] hover:text-white p-2 rounded-lg sm:hidden focus:outline-none focus:ring-2 focus:ring-[#00E35F]" aria-label="Rechercher">
           <Search size={20} />
         </button>
       </div>
@@ -38,8 +40,10 @@ const AdminHeader = ({ toggleSidebar }) => {
       <div className="flex items-center gap-4 sm:gap-6">
         <div className="relative">
           <button 
+            type="button"
             onClick={() => setShowNotifications(!showNotifications)}
             className="relative text-[#8A8D98] hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-[#00E35F] rounded-full p-1"
+            aria-label="Afficher les notifications"
           >
             <Bell size={20} />
             {notificationCount > 0 && (

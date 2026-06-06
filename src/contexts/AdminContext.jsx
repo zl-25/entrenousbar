@@ -30,7 +30,8 @@ export const AdminProvider = ({ children }) => {
 
     if (saved) {
       const parsed = JSON.parse(saved);
-      if (parsed.length === 1 && (parsed[0].email === 'admin@entrenous.com' || parsed[0].email === 'admin@entrenous.ga')) {
+      // Removed the buggy condition that overwrote the settings if there was only 1 admin user
+      if (!parsed || parsed.length === 0) {
         localStorage.setItem('entrenous_admin_users', JSON.stringify(defaults));
         return defaults;
       }
@@ -41,6 +42,7 @@ export const AdminProvider = ({ children }) => {
 
   const [events, setEvents] = useState([]);
   const [reservations, setReservations] = useState([]);
+  const [tickets, setTickets] = useState([]);
   const [transactions, setTransactions] = useState([]);
   const [gallery, setGallery] = useState([]);
   const [newsletters, setNewsletters] = useState([]);
@@ -49,13 +51,26 @@ export const AdminProvider = ({ children }) => {
   const [siteSettings, setSiteSettings] = useState(getInitialSettings);
   const [loading, setLoading] = useState(true);
 
+  // Build transactions from ticket sales
+  const buildTransactionsFromTickets = (ticketsList) => {
+    return ticketsList.map(t => ({
+      id: t.id,
+      type: `Ticket ${t.ticket_name || t.ticket_type || 'Standard'} — ${t.event_title || 'Événement'}`,
+      method: 'Maketou',
+      amount: t.price || '0 FCFA',
+      time: t.created_at ? new Date(t.created_at).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '-',
+      isIncome: true
+    }));
+  };
+
   // Fetch initial data from Supabase
   const fetchData = async () => {
     try {
-      const [eventsRes, resRes, newsRes] = await Promise.all([
+      const [eventsRes, resRes, newsRes, ticketsRes] = await Promise.all([
         supabase.from('events').select('*').order('id', { ascending: false }),
         supabase.from('reservations').select('*').order('id', { ascending: false }),
-        supabase.from('newsletters').select('*').order('id', { ascending: false })
+        supabase.from('newsletters').select('*').order('id', { ascending: false }),
+        supabase.from('tickets').select('*').order('id', { ascending: false })
       ]);
 
       if (eventsRes.data) {
@@ -70,6 +85,10 @@ export const AdminProvider = ({ children }) => {
       }
       if (resRes.data) setReservations(resRes.data);
       if (newsRes.data) setNewsletters(newsRes.data);
+      if (ticketsRes.data) {
+        setTickets(ticketsRes.data);
+        setTransactions(buildTransactionsFromTickets(ticketsRes.data));
+      }
     } catch (error) {
       console.error("Erreur de connexion à Supabase:", error);
     } finally {
@@ -164,7 +183,21 @@ export const AdminProvider = ({ children }) => {
 
   const updateEvent = async (id, updatedEvent) => {
     try {
-      const { error } = await supabase.from('events').update(updatedEvent).eq('id', id);
+      // Préparer les données pour Supabase (sérialiser les tableaux en JSON string)
+      const eventData = { ...updatedEvent };
+      if (Array.isArray(eventData.description)) eventData.description = JSON.stringify(eventData.description);
+      if (Array.isArray(eventData.artists)) eventData.artists = JSON.stringify(eventData.artists);
+      if (Array.isArray(eventData.tickets)) eventData.tickets = JSON.stringify(eventData.tickets);
+      if (eventData.djs && Array.isArray(eventData.djs)) {
+        if (!eventData.artists) eventData.artists = JSON.stringify(eventData.djs);
+        delete eventData.djs;
+      }
+      
+      // SUPPRIMER LES CHAMPS QUI N'EXISTENT PAS DANS SUPABASE
+      delete eventData.priceNum;
+      delete eventData.id;
+
+      const { error } = await supabase.from('events').update(eventData).eq('id', id);
       if (error) throw error;
     } catch (error) {
       console.warn("Erreur mise à jour Supabase:", error);
@@ -208,6 +241,36 @@ export const AdminProvider = ({ children }) => {
       setReservations(reservations.map(r => r.id === id ? { ...r, status } : r));
     } catch (error) {
       console.error("Erreur statut réservation:", error);
+    }
+  };
+
+  const updateReservation = async (id, updatedReservation) => {
+    try {
+      const { error } = await supabase
+        .from('reservations')
+        .update(updatedReservation)
+        .eq('id', id);
+
+      if (error) throw error;
+      setReservations(reservations.map(r => r.id === id ? { ...r, ...updatedReservation } : r));
+    } catch (error) {
+      console.error("Erreur modification réservation:", error);
+      throw error;
+    }
+  };
+
+  const deleteReservation = async (id) => {
+    try {
+      const { error } = await supabase
+        .from('reservations')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+      setReservations(reservations.filter(r => r.id !== id));
+    } catch (error) {
+      console.error("Erreur suppression réservation:", error);
+      throw error;
     }
   };
 
@@ -270,8 +333,8 @@ export const AdminProvider = ({ children }) => {
   return (
     <AdminContext.Provider value={{
       events, addEvent, updateEvent, deleteEvent,
-      reservations, addReservation, updateReservationStatus,
-      transactions,
+      reservations, addReservation, updateReservationStatus, updateReservation, deleteReservation,
+      tickets, setTickets, transactions,
       gallery, addGalleryImage, deleteGalleryImage,
       newsletters, campaigns, addCampaign,
       users, addUser, updateUser, deleteUser,

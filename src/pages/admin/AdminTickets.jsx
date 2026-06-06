@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Search, QrCode, CheckCircle, XCircle, Camera } from 'lucide-react';
+import { useState } from 'react';
+import { QrCode, CheckCircle, XCircle, Camera } from 'lucide-react';
 import { Scanner } from '@yudiel/react-qr-scanner';
 import toast from 'react-hot-toast';
 import { supabase } from '../../lib/supabaseClient';
@@ -87,6 +87,7 @@ const AdminTickets = () => {
                 <Camera size={48} className="mb-2 opacity-50" />
                 <p>La caméra est désactivée</p>
                 <button 
+                  type="button"
                   onClick={() => {
                     if (window.isSecureContext === false) {
                       toast.error("ATTENTION: La caméra nécessite une connexion sécurisée (HTTPS) ou 'localhost' pour fonctionner sur mobile. Si vous testez via une adresse IP locale, cela peut bloquer la caméra.", { duration: 8000 });
@@ -129,6 +130,7 @@ const AdminTickets = () => {
                   options={{ delayBetweenScanSuccess: 2000 }}
                 />
                 <button 
+                  type="button"
                   onClick={() => setCameraActive(false)}
                   className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-red-500/80 hover:bg-red-500 text-white px-4 py-2 rounded-lg text-sm font-bold backdrop-blur-sm transition-all"
                 >
@@ -150,7 +152,9 @@ const AdminTickets = () => {
           <form onSubmit={handleSimulateScan} className="mt-6">
             <div className="flex flex-col sm:flex-row gap-3">
               <input 
+                id="ticket-code"
                 type="text" 
+                aria-label="Code du ticket"
                 placeholder="Code du ticket (ex: ENB-12345)" 
                 value={ticketCode}
                 onChange={(e) => setTicketCode(e.target.value)}
@@ -196,6 +200,7 @@ const AdminTickets = () => {
                   </div>
                   
                   <button 
+                    type="button"
                     onClick={() => {
                       setScanResult(null);
                       setTicketCode('');
@@ -211,6 +216,7 @@ const AdminTickets = () => {
                   <h3 className="text-2xl font-bold text-red-500 mb-2">Erreur</h3>
                   <p className="text-red-400 mb-6">{scanResult.error}</p>
                   <button 
+                    type="button"
                     onClick={() => {
                       setScanResult(null);
                       setTicketCode('');

@@ -46,12 +46,13 @@ const AdminLogin = () => {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-[#8A8D98] mb-2">Adresse Email</label>
+              <label htmlFor="admin-email" className="block text-sm font-medium text-[#8A8D98] mb-2">Adresse Email</label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <iconify-icon icon="lucide:mail" class="text-[#8A8D98] text-lg"></iconify-icon>
                 </div>
                 <input
+                  id="admin-email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -63,12 +64,13 @@ const AdminLogin = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-[#8A8D98] mb-2">Mot de passe</label>
+              <label htmlFor="admin-password" className="block text-sm font-medium text-[#8A8D98] mb-2">Mot de passe</label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <Lock size={18} className="text-[#8A8D98]" />
                 </div>
                 <input
+                  id="admin-password"
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -80,6 +82,7 @@ const AdminLogin = () => {
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#8A8D98] hover:text-white"
+                  aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>

@@ -26,9 +26,9 @@ const Footer = () => {
               Entre Nous Bar, le bar plein air qui vous accueille dans une ambiance chaleureuse et festive.
             </p>
             <div className="flex gap-4">
-              <a href={siteSettings.facebook} target="_blank" rel="noreferrer" id="footer-fb" className="text-xl text-gray-400 hover:text-white transition-colors"><iconify-icon icon="lucide:facebook"></iconify-icon></a>
-              <a href={siteSettings.instagram} target="_blank" rel="noreferrer" id="footer-ig" className="text-xl text-gray-400 hover:text-white transition-colors"><iconify-icon icon="lucide:instagram"></iconify-icon></a>
-              <a href="#" id="footer-tt" className="text-xl text-gray-400 hover:text-white transition-colors"><iconify-icon icon="ri:tiktok-fill"></iconify-icon></a>
+              <a href={siteSettings.facebook} target="_blank" rel="noreferrer" id="footer-fb" className="text-xl text-gray-400 hover:text-white transition-colors" aria-label="Facebook Entre Nous Bar"><iconify-icon icon="lucide:facebook"></iconify-icon></a>
+              <a href={siteSettings.instagram} target="_blank" rel="noreferrer" id="footer-ig" className="text-xl text-gray-400 hover:text-white transition-colors" aria-label="Instagram Entre Nous Bar"><iconify-icon icon="lucide:instagram"></iconify-icon></a>
+              <a href="https://www.tiktok.com/@entrenousbar" target="_blank" rel="noreferrer" id="footer-tt" className="text-xl text-gray-400 hover:text-white transition-colors" aria-label="TikTok Entre Nous Bar"><iconify-icon icon="ri:tiktok-fill"></iconify-icon></a>
             </div>
           </div>
 
@@ -81,9 +81,9 @@ const Footer = () => {
             </div>
             <p className="mt-8 text-xs text-gray-500 uppercase tracking-widest">@entrenousbar</p>
             <div className="mt-2 flex gap-4">
-              <a href={siteSettings.facebook} target="_blank" rel="noreferrer" className="text-gray-500 hover:text-white transition-colors"><iconify-icon icon="lucide:facebook"></iconify-icon></a>
-              <a href={siteSettings.instagram} target="_blank" rel="noreferrer" className="text-gray-500 hover:text-white transition-colors"><iconify-icon icon="lucide:instagram"></iconify-icon></a>
-              <a href="#" className="text-gray-500 hover:text-white transition-colors"><iconify-icon icon="ri:tiktok-fill"></iconify-icon></a>
+              <a href={siteSettings.facebook} target="_blank" rel="noreferrer" className="text-gray-500 hover:text-white transition-colors" aria-label="Facebook Entre Nous Bar"><iconify-icon icon="lucide:facebook"></iconify-icon></a>
+              <a href={siteSettings.instagram} target="_blank" rel="noreferrer" className="text-gray-500 hover:text-white transition-colors" aria-label="Instagram Entre Nous Bar"><iconify-icon icon="lucide:instagram"></iconify-icon></a>
+              <a href="https://www.tiktok.com/@entrenousbar" target="_blank" rel="noreferrer" className="text-gray-500 hover:text-white transition-colors" aria-label="TikTok Entre Nous Bar"><iconify-icon icon="ri:tiktok-fill"></iconify-icon></a>
             </div>
           </div>
         </div>
@@ -91,8 +91,8 @@ const Footer = () => {
         <div className="border-t border-white/5 pt-10 flex flex-col md:flex-row items-center justify-between gap-6 text-[10px] text-gray-500 font-bold tracking-widest">
           <p>© 2024 ENTRE NOUS BAR. TOUS DROITS RÉSERVÉS.</p>
           <div className="flex gap-8">
-            <a href="#" id="legal-mentions" className="hover:text-white">MENTIONS LÉGALES</a>
-            <a href="#" id="legal-cgv" className="hover:text-white">CONDITIONS GÉNÉRALES</a>
+            <span id="legal-mentions">MENTIONS LÉGALES</span>
+            <span id="legal-cgv">CONDITIONS GÉNÉRALES</span>
           </div>
         </div>
       </div>

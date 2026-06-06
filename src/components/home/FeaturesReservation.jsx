@@ -75,8 +75,9 @@ const FeaturesReservation = () => {
               
               <form className="space-y-5" onSubmit={handleSubmit}>
                 <div className="relative">
-                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Convives</label>
+                  <label htmlFor="reservation-guests" className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Convives</label>
                   <select 
+                    id="reservation-guests"
                     className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3.5 text-sm appearance-none focus:outline-none focus:border-green-500 transition-colors text-white font-medium"
                     value={formData.guests}
                     onChange={(e) => setFormData({...formData, guests: e.target.value})}
@@ -92,8 +93,9 @@ const FeaturesReservation = () => {
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div className="relative">
-                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Date</label>
+                    <label htmlFor="reservation-date" className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Date</label>
                     <input 
+                      id="reservation-date"
                       type="date" 
                       className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-green-500 transition-colors text-white font-medium [&::-webkit-calendar-picker-indicator]:filter-[invert(1)]" 
                       value={formData.date}
@@ -101,8 +103,9 @@ const FeaturesReservation = () => {
                     />
                   </div>
                   <div className="relative">
-                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Heure</label>
+                    <label htmlFor="reservation-time" className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Heure</label>
                     <input 
+                      id="reservation-time"
                       type="time" 
                       className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-green-500 transition-colors text-white font-medium [&::-webkit-calendar-picker-indicator]:filter-[invert(1)]" 
                       value={formData.time}

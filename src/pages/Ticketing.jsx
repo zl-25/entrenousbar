@@ -22,6 +22,12 @@ const STEPS = [
   { id: 4, short: 'Confirmation' }
 ];
 
+const STORAGE_KEYS = {
+  formData: 'maketou_form_data:v1',
+  ticket: 'maketou_ticket:v1',
+  cartId: 'maketou_cart_id:v1'
+};
+
 const Ticketing = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -46,7 +52,7 @@ const Ticketing = () => {
     const verifyPayment = async () => {
       const params = new URLSearchParams(window.location.search);
       if (params.get('status') === 'success') {
-        const cartId = localStorage.getItem('maketou_cart_id');
+        const cartId = localStorage.getItem(STORAGE_KEYS.cartId);
         if (!cartId) {
           setPaymentError('Référence de paiement introuvable.');
           return;
@@ -64,9 +70,9 @@ const Ticketing = () => {
           const data = await response.json();
 
           if (data.status === 'completed') {
-            const savedData = localStorage.getItem('maketou_form_data');
+            const savedData = localStorage.getItem(STORAGE_KEYS.formData);
             if (savedData) setFormData(JSON.parse(savedData));
-            const savedTicket = localStorage.getItem('maketou_ticket');
+            const savedTicket = localStorage.getItem(STORAGE_KEYS.ticket);
             if (savedTicket) setSelectedTicket(savedTicket);
             setStep(4);
           } else {
@@ -91,7 +97,7 @@ const Ticketing = () => {
     return (
       <div className="min-h-screen pt-32 pb-20 flex flex-col items-center justify-center text-center px-4 bg-[#050505]">
         <h1 className="text-4xl font-bold clash text-white mb-6">ÉVÉNEMENT INTROUVABLE</h1>
-        <button onClick={() => navigate('/events')} className="bg-green-700 text-white px-8 py-3 rounded-xl font-bold">RETOUR</button>
+        <button type="button" onClick={() => navigate('/events')} className="bg-green-700 text-white px-8 py-3 rounded-xl font-bold">RETOUR</button>
       </div>
     );
   }
@@ -129,8 +135,8 @@ const Ticketing = () => {
         const firstName = nameParts[0];
         const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : 'Client';
 
-        localStorage.setItem('maketou_form_data', JSON.stringify(formData));
-        localStorage.setItem('maketou_ticket', selectedTicket);
+        localStorage.setItem(STORAGE_KEYS.formData, JSON.stringify(formData));
+        localStorage.setItem(STORAGE_KEYS.ticket, selectedTicket);
 
         const response = await fetch('https://api.maketou.net/api/v1/stores/cart/checkout', {
           method: 'POST',
@@ -163,7 +169,7 @@ const Ticketing = () => {
 
         if (data && data.redirectUrl) {
           if (data.cart && data.cart.id) {
-            localStorage.setItem('maketou_cart_id', data.cart.id);
+            localStorage.setItem(STORAGE_KEYS.cartId, data.cart.id);
           }
           setStep(3);
           window.location.href = data.redirectUrl;
@@ -178,7 +184,7 @@ const Ticketing = () => {
       return;
     }
 
-    if (step < 4) setStep(step + 1);
+    if (step < 4) setStep(currentStep => currentStep + 1);
   };
 
   const downloadTicket = async (qrCodeBase64, reference) => {
@@ -418,6 +424,7 @@ const Ticketing = () => {
                   </div>
                 </div>
                 <button
+                  type="button"
                   onClick={handleNext}
                   className="w-full bg-green-700 hover:bg-green-600 active:scale-[0.98] transition-all text-white py-4 rounded-xl flex items-center justify-center gap-3 text-sm font-black uppercase tracking-widest shadow-[0_0_20px_rgba(21,128,61,0.2)]"
                 >
@@ -441,10 +448,11 @@ const Ticketing = () => {
 
               <form onSubmit={handleNext} className="space-y-6">
                 <div>
-                  <label className="block text-[10px] font-bold tracking-widest text-gray-500 uppercase mb-2">
+                  <label htmlFor="ticketing-name" className="block text-[10px] font-bold tracking-widest text-gray-500 uppercase mb-2">
                     Nom Complet <span className="text-red-500">*</span>
                   </label>
                   <input
+                    id="ticketing-name"
                     type="text"
                     name="name"
                     placeholder="Ex: Jean Dupont"
@@ -463,10 +471,11 @@ const Ticketing = () => {
 
                 <div className="grid sm:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-[10px] font-bold tracking-widest text-gray-500 uppercase mb-2">
+                    <label htmlFor="ticketing-phone" className="block text-[10px] font-bold tracking-widest text-gray-500 uppercase mb-2">
                       Téléphone <span className="text-red-500">*</span>
                     </label>
                     <input
+                      id="ticketing-phone"
                       type="tel"
                       name="phone"
                       placeholder="Ex: +241 62 12 34 56"
@@ -483,10 +492,11 @@ const Ticketing = () => {
                     {touched.phone && errors.phone && <p className="text-red-400 text-xs mt-1">{errors.phone}</p>}
                   </div>
                   <div>
-                    <label className="block text-[10px] font-bold tracking-widest text-gray-500 uppercase mb-2">
+                    <label htmlFor="ticketing-email" className="block text-[10px] font-bold tracking-widest text-gray-500 uppercase mb-2">
                       Email <span className="text-red-500">*</span>
                     </label>
                     <input
+                      id="ticketing-email"
                       type="email"
                       name="email"
                       placeholder="votre@email.com"
@@ -505,8 +515,9 @@ const Ticketing = () => {
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold tracking-widest text-gray-500 uppercase mb-2">Adresse (Facultatif)</label>
+                  <label htmlFor="ticketing-address" className="block text-[10px] font-bold tracking-widest text-gray-500 uppercase mb-2">Adresse (Facultatif)</label>
                   <textarea
+                    id="ticketing-address"
                     name="address"
                     placeholder="Votre adresse de résidence"
                     rows="3"
@@ -563,7 +574,7 @@ const Ticketing = () => {
             </div>
             <h3 className="text-2xl font-bold clash text-white mb-2">Problème de paiement</h3>
             <p className="text-red-400 mb-6">{paymentError}</p>
-            <button onClick={() => window.location.href = '/'} className="bg-white/10 hover:bg-white/20 text-white px-8 py-3 rounded-xl font-bold transition-all">Retour à l'accueil</button>
+            <button type="button" onClick={() => window.location.href = '/'} className="bg-white/10 hover:bg-white/20 text-white px-8 py-3 rounded-xl font-bold transition-all">Retour à l'accueil</button>
           </div>
         )}
 
@@ -579,6 +590,7 @@ const Ticketing = () => {
 
             <div className="flex flex-col gap-3 md:mt-8" data-html2canvas-ignore="true">
               <button
+                type="button"
                 onClick={() => navigate('/')}
                 className="border border-white/10 hover:bg-white/5 py-3 rounded-xl font-bold text-center transition-all uppercase text-[10px] tracking-widest text-white"
               >

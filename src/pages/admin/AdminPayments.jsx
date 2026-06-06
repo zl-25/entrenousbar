@@ -76,6 +76,7 @@ const AdminPayments = () => {
             </div>
             <input
               type="text"
+              aria-label="Rechercher une transaction"
               placeholder="Rechercher une transaction..."
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}

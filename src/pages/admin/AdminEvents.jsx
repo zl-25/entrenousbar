@@ -4,7 +4,7 @@ import { useAdmin } from '../../contexts/AdminContext';
 import toast from 'react-hot-toast';
 
 const AdminEvents = () => {
-  const { events, deleteEvent, addEvent, uploadImage } = useAdmin();
+  const { events, deleteEvent, addEvent, updateEvent, uploadImage } = useAdmin();
   const [searchTerm, setSearchTerm] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -21,10 +21,13 @@ const AdminEvents = () => {
     'SEPTEMBRE': '09', 'OCTOBRE': '10', 'NOVEMBRE': '11', 'DÉCEMBRE': '12'
   };
 
-  const filteredEvents = events?.filter(e => 
-    e.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    e.type.toLowerCase().includes(searchTerm.toLowerCase())
-  ) || [];
+  const filteredEvents = events?.filter(e => {
+    const searchLower = searchTerm.toLowerCase();
+    return e.title?.toLowerCase().includes(searchLower) || 
+           e.type?.toLowerCase().includes(searchLower) ||
+           e.date?.toLowerCase().includes(searchLower) ||
+           e.price?.toLowerCase().includes(searchLower);
+  }) || [];
 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
@@ -103,7 +106,7 @@ const AdminEvents = () => {
           <h1 className="text-2xl font-bold text-white mb-1">Événements</h1>
           <p className="text-sm text-[#8A8D98]">Gérez tous les événements de l'Entre Nous Bar</p>
         </div>
-        <button onClick={openCreateModal} className="bg-[#00E35F] hover:bg-green-400 text-black font-bold py-2.5 px-4 rounded-xl transition-all shadow-[0_0_15px_rgba(0,227,95,0.2)] flex items-center gap-2">
+        <button type="button" onClick={openCreateModal} className="bg-[#00E35F] hover:bg-green-400 text-black font-bold py-2.5 px-4 rounded-xl transition-all shadow-[0_0_15px_rgba(0,227,95,0.2)] flex items-center gap-2">
           <Plus size={18} />
           Créer un événement
         </button>
@@ -112,11 +115,17 @@ const AdminEvents = () => {
       <div className="bg-[#1A1D24] border border-[#2A2D36] rounded-xl overflow-hidden">
         <div className="p-4 border-b border-[#2A2D36] flex justify-between items-center bg-[#111317]/50">
           <div className="relative w-full max-w-md">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Search size={18} className="text-[#8A8D98]" />
-            </div>
+            <button 
+              type="button"
+              className="absolute inset-y-0 left-0 pl-3 flex items-center"
+              onClick={() => document.getElementById('search-event-input')?.focus()}
+            >
+              <Search size={18} className="text-[#8A8D98] hover:text-white transition-colors" />
+            </button>
             <input 
+              id="search-event-input"
               type="text" 
+              aria-label="Rechercher un événement"
               placeholder="Rechercher un événement..." 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -157,10 +166,11 @@ const AdminEvents = () => {
                   </td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex items-center justify-end gap-2">
-                      <button onClick={() => handleEditClick(evt)} className="p-2 hover:bg-[#2A2D36] rounded-lg transition-colors text-white" title="Modifier">
+                      <button type="button" onClick={() => handleEditClick(evt)} className="p-2 hover:bg-[#2A2D36] rounded-lg transition-colors text-white" title="Modifier">
                         <Edit size={16} />
                       </button>
                       <button 
+                        type="button"
                         onClick={() => {
                           if(window.confirm('Voulez-vous vraiment supprimer cet événement ?')) {
                             deleteEvent(evt.id);
@@ -192,7 +202,7 @@ const AdminEvents = () => {
           <div className="bg-[#1A1D24] border border-[#2A2D36] rounded-2xl w-full max-w-2xl overflow-y-auto max-h-[90vh]">
             <div className="p-4 border-b border-[#2A2D36] flex justify-between items-center bg-[#111317] sticky top-0 z-10">
               <h3 className="text-lg font-bold text-white">{editingId ? "Modifier l'événement" : "Créer un événement (Complet)"}</h3>
-              <button onClick={() => setIsModalOpen(false)} className="text-[#8A8D98] hover:text-white transition-colors">
+              <button type="button" onClick={() => setIsModalOpen(false)} className="text-[#8A8D98] hover:text-white transition-colors" aria-label="Fermer">
                 <X size={20} />
               </button>
             </div>
@@ -200,7 +210,7 @@ const AdminEvents = () => {
               
               {/* Image Upload Area */}
               <div>
-                <label className="block text-xs font-semibold text-[#8A8D98] uppercase mb-1">Affiche de l'événement</label>
+                <label htmlFor="event-image" className="block text-xs font-semibold text-[#8A8D98] uppercase mb-1">Affiche de l'événement</label>
                 <div className="w-full h-32 border-2 border-dashed border-[#2A2D36] rounded-xl flex flex-col items-center justify-center text-[#8A8D98] relative overflow-hidden bg-[#111317] hover:bg-[#2A2D36]/50 transition-colors cursor-pointer">
                   {formData.image ? (
                     <img src={formData.image} alt="Affiche" className="absolute inset-0 w-full h-full object-cover opacity-60" />
@@ -208,19 +218,19 @@ const AdminEvents = () => {
                     <Upload size={24} className="mb-2" />
                   )}
                   <span className="relative z-10">{uploading ? 'Téléchargement...' : (formData.image ? 'Changer l\'image' : 'Cliquez pour uploader')}</span>
-                  <input type="file" accept="image/*" onChange={handleImageUpload} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20" disabled={uploading} />
+                  <input id="event-image" type="file" accept="image/*" onChange={handleImageUpload} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20" disabled={uploading} />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#8A8D98] uppercase mb-1">Titre de l'événement</label>
-                <input required type="text" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} className="w-full px-3 py-2 bg-[#111317] border border-[#2A2D36] rounded-lg text-white focus:outline-none focus:border-[#00E35F]" />
+                <label htmlFor="event-title" className="block text-xs font-semibold text-[#8A8D98] uppercase mb-1">Titre de l'événement</label>
+                <input id="event-title" required type="text" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} className="w-full px-3 py-2 bg-[#111317] border border-[#2A2D36] rounded-lg text-white focus:outline-none focus:border-[#00E35F]" />
               </div>
 
               <div className="grid grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-[#8A8D98] uppercase mb-1">Jour</label>
-                  <select required value={formData.day} onChange={e => setFormData({...formData, day: e.target.value})} className="w-full px-3 py-2 bg-[#111317] border border-[#2A2D36] rounded-lg text-white focus:outline-none focus:border-[#00E35F]">
+                  <label htmlFor="event-day" className="block text-xs font-semibold text-[#8A8D98] uppercase mb-1">Jour</label>
+                  <select id="event-day" required value={formData.day} onChange={e => setFormData({...formData, day: e.target.value})} className="w-full px-3 py-2 bg-[#111317] border border-[#2A2D36] rounded-lg text-white focus:outline-none focus:border-[#00E35F]">
                     <option value="">--</option>
                     {Array.from({ length: 31 }, (_, i) => String(i + 1).padStart(2, '0')).map(d => (
                       <option key={d} value={d}>{d}</option>
@@ -228,8 +238,8 @@ const AdminEvents = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-[#8A8D98] uppercase mb-1">Mois</label>
-                  <select required value={formData.month} onChange={e => setFormData({...formData, month: e.target.value})} className="w-full px-3 py-2 bg-[#111317] border border-[#2A2D36] rounded-lg text-white focus:outline-none focus:border-[#00E35F]">
+                  <label htmlFor="event-month" className="block text-xs font-semibold text-[#8A8D98] uppercase mb-1">Mois</label>
+                  <select id="event-month" required value={formData.month} onChange={e => setFormData({...formData, month: e.target.value})} className="w-full px-3 py-2 bg-[#111317] border border-[#2A2D36] rounded-lg text-white focus:outline-none focus:border-[#00E35F]">
                     <option value="">--</option>
                     {['JANVIER','FÉVRIER','MARS','AVRIL','MAI','JUIN','JUILLET','AOÛT','SEPTEMBRE','OCTOBRE','NOVEMBRE','DÉCEMBRE'].map(m => (
                       <option key={m} value={m}>{m}</option>
@@ -237,8 +247,8 @@ const AdminEvents = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-[#8A8D98] uppercase mb-1">Année</label>
-                  <select required value={formData.year} onChange={e => setFormData({...formData, year: e.target.value})} className="w-full px-3 py-2 bg-[#111317] border border-[#2A2D36] rounded-lg text-white focus:outline-none focus:border-[#00E35F]">
+                  <label htmlFor="event-year" className="block text-xs font-semibold text-[#8A8D98] uppercase mb-1">Année</label>
+                  <select id="event-year" required value={formData.year} onChange={e => setFormData({...formData, year: e.target.value})} className="w-full px-3 py-2 bg-[#111317] border border-[#2A2D36] rounded-lg text-white focus:outline-none focus:border-[#00E35F]">
                     <option value="">--</option>
                     <option value="2025">2025</option>
                     <option value="2026">2026</option>
@@ -249,19 +259,19 @@ const AdminEvents = () => {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-[#8A8D98] uppercase mb-1">Heure de début</label>
-                  <input required type="time" value={formData.time} onChange={e => setFormData({...formData, time: e.target.value})} className="w-full px-3 py-2 bg-[#111317] border border-[#2A2D36] rounded-lg text-white focus:outline-none focus:border-[#00E35F]" />
+                  <label htmlFor="event-start-time" className="block text-xs font-semibold text-[#8A8D98] uppercase mb-1">Heure de début</label>
+                  <input id="event-start-time" required type="time" value={formData.time} onChange={e => setFormData({...formData, time: e.target.value})} className="w-full px-3 py-2 bg-[#111317] border border-[#2A2D36] rounded-lg text-white focus:outline-none focus:border-[#00E35F]" />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-[#8A8D98] uppercase mb-1">Heure de fin</label>
-                  <input required type="time" value={formData.endTime} onChange={e => setFormData({...formData, endTime: e.target.value})} className="w-full px-3 py-2 bg-[#111317] border border-[#2A2D36] rounded-lg text-white focus:outline-none focus:border-[#00E35F]" />
+                  <label htmlFor="event-end-time" className="block text-xs font-semibold text-[#8A8D98] uppercase mb-1">Heure de fin</label>
+                  <input id="event-end-time" required type="time" value={formData.endTime} onChange={e => setFormData({...formData, endTime: e.target.value})} className="w-full px-3 py-2 bg-[#111317] border border-[#2A2D36] rounded-lg text-white focus:outline-none focus:border-[#00E35F]" />
                 </div>
               </div>
 
               <div className="grid grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-[#8A8D98] uppercase mb-1">Type</label>
-                  <select value={formData.type} onChange={e => setFormData({...formData, type: e.target.value})} className="w-full px-3 py-2 bg-[#111317] border border-[#2A2D36] rounded-lg text-white focus:outline-none focus:border-[#00E35F]">
+                  <label htmlFor="event-type" className="block text-xs font-semibold text-[#8A8D98] uppercase mb-1">Type</label>
+                  <select id="event-type" value={formData.type} onChange={e => setFormData({...formData, type: e.target.value})} className="w-full px-3 py-2 bg-[#111317] border border-[#2A2D36] rounded-lg text-white focus:outline-none focus:border-[#00E35F]">
                     <option value="Soirée Clubbing">Soirée Clubbing</option>
                     <option value="Concert Live">Concert Live</option>
                     <option value="Gala">Gala</option>
@@ -271,20 +281,20 @@ const AdminEvents = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-[#8A8D98] uppercase mb-1">Label Prix (ex: 10 000 FCFA)</label>
-                  <input required type="text" value={formData.price} onChange={e => setFormData({...formData, price: e.target.value})} className="w-full px-3 py-2 bg-[#111317] border border-[#2A2D36] rounded-lg text-white focus:outline-none focus:border-[#00E35F]" />
+                  <label htmlFor="event-price-label" className="block text-xs font-semibold text-[#8A8D98] uppercase mb-1">Label Prix (ex: 10 000 FCFA)</label>
+                  <input id="event-price-label" required type="text" value={formData.price} onChange={e => setFormData({...formData, price: e.target.value})} className="w-full px-3 py-2 bg-[#111317] border border-[#2A2D36] rounded-lg text-white focus:outline-none focus:border-[#00E35F]" />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-[#8A8D98] uppercase mb-1">Valeur Prix (ex: 10000)</label>
-                  <input required type="number" value={formData.priceNum} onChange={e => setFormData({...formData, priceNum: e.target.value})} className="w-full px-3 py-2 bg-[#111317] border border-[#2A2D36] rounded-lg text-white focus:outline-none focus:border-[#00E35F]" />
+                  <label htmlFor="event-price-value" className="block text-xs font-semibold text-[#8A8D98] uppercase mb-1">Valeur Prix (ex: 10000)</label>
+                  <input id="event-price-value" required type="number" value={formData.priceNum} onChange={e => setFormData({...formData, priceNum: e.target.value})} className="w-full px-3 py-2 bg-[#111317] border border-[#2A2D36] rounded-lg text-white focus:outline-none focus:border-[#00E35F]" />
                 </div>
               </div>
 
 
 
               <div>
-                <label className="block text-xs font-semibold text-[#8A8D98] uppercase mb-1">Description (Sautez des lignes pour les paragraphes)</label>
-                <textarea required rows="4" value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} className="w-full px-3 py-2 bg-[#111317] border border-[#2A2D36] rounded-lg text-white focus:outline-none focus:border-[#00E35F]"></textarea>
+                <label htmlFor="event-description" className="block text-xs font-semibold text-[#8A8D98] uppercase mb-1">Description (Sautez des lignes pour les paragraphes)</label>
+                <textarea id="event-description" required rows="4" value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} className="w-full px-3 py-2 bg-[#111317] border border-[#2A2D36] rounded-lg text-white focus:outline-none focus:border-[#00E35F]"></textarea>
               </div>
               
               <div className="pt-4 border-t border-[#2A2D36] flex justify-end gap-3">

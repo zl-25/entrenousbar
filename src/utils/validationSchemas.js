@@ -11,7 +11,8 @@ export const reservationSchema = z.object({
     .min(5, 'Email trop court'),
   
   phone: z.string()
-    .regex(/^[+]?[(]?[0-9]{1,4}[)]?[-\s.]?[(]?[0-9]{1,4}[)]?[-\s.]?[0-9]{1,9}$/, 'Numéro de téléphone invalide'),
+    .regex(/^[+]?[(]?[0-9]{1,4}[)]?[-\s.]?[(]?[0-9]{1,4}[)]?[-\s.]?[0-9]{1,9}$/, 'Format invalide. Exemple attendu: +241 62 12 34 56 ou 062123456')
+    .min(8, 'Le numéro est trop court (min 8 chiffres)'),
   
   address: z.string().optional(),
   
@@ -27,7 +28,8 @@ export const ticketingSchema = z.object({
     .email('Veuillez entrer une adresse email valide'),
   
   phone: z.string()
-    .regex(/^[+]?[(]?[0-9]{1,4}[)]?[-\s.]?[(]?[0-9]{1,4}[)]?[-\s.]?[0-9]{1,9}$/, 'Numéro de téléphone invalide'),
+    .regex(/^[+]?[(]?[0-9]{1,4}[)]?[-\s.]?[(]?[0-9]{1,4}[)]?[-\s.]?[0-9]{1,9}$/, 'Format invalide. Exemple attendu: +241 62 12 34 56 ou 062123456')
+    .min(8, 'Le numéro est trop court (min 8 chiffres)'),
   
   address: z.string().optional(),
   

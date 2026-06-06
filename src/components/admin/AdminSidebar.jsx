@@ -102,7 +102,7 @@ const AdminSidebar = ({ isOpen, closeSidebar }) => {
                 <p className="text-[10px] text-[#8A8D98]">{roleLabels[userRole] || 'Connecté'}</p>
               </div>
             </div>
-            <button onClick={logout} className="text-[#8A8D98] hover:text-red-400 transition-colors p-2" title="Déconnexion">
+            <button type="button" onClick={logout} className="text-[#8A8D98] hover:text-red-400 transition-colors p-2" title="Déconnexion">
               <LogOut size={18} />
             </button>
           </div>

@@ -46,7 +46,7 @@ export const AdminUsers = () => {
           <h1 className="text-2xl font-bold text-white mb-1">Utilisateurs Admin</h1>
           <p className="text-sm text-[#8A8D98]">Gestion des accès et permissions du panel</p>
         </div>
-        <button onClick={() => setIsModalOpen(true)} className="bg-[#00E35F] hover:bg-green-400 text-black font-bold py-2.5 px-4 rounded-xl transition-all flex items-center gap-2">
+        <button type="button" onClick={() => setIsModalOpen(true)} className="bg-[#00E35F] hover:bg-green-400 text-black font-bold py-2.5 px-4 rounded-xl transition-all flex items-center gap-2">
           <Plus size={18} />
           Ajouter un membre
         </button>
@@ -57,24 +57,24 @@ export const AdminUsers = () => {
           <div className="bg-[#1A1D24] border border-[#2A2D36] rounded-2xl w-full max-w-md p-6">
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-xl font-bold text-white">Ajouter un membre</h3>
-              <button onClick={() => setIsModalOpen(false)} className="text-[#8A8D98] hover:text-white"><X size={20}/></button>
+              <button type="button" onClick={() => setIsModalOpen(false)} className="text-[#8A8D98] hover:text-white" aria-label="Fermer"><X size={20}/></button>
             </div>
             <form onSubmit={handleAddUser} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-[#8A8D98] mb-1">Nom complet</label>
-                <input required type="text" value={newUser.name} onChange={e => setNewUser({...newUser, name: e.target.value})} className="w-full bg-[#111317] border border-[#2A2D36] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#00E35F]" />
+                <label htmlFor="new-user-name" className="block text-sm font-medium text-[#8A8D98] mb-1">Nom complet</label>
+                <input id="new-user-name" required type="text" value={newUser.name} onChange={e => setNewUser({...newUser, name: e.target.value})} className="w-full bg-[#111317] border border-[#2A2D36] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#00E35F]" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#8A8D98] mb-1">Adresse Email</label>
-                <input required type="email" value={newUser.email} onChange={e => setNewUser({...newUser, email: e.target.value})} className="w-full bg-[#111317] border border-[#2A2D36] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#00E35F]" />
+                <label htmlFor="new-user-email" className="block text-sm font-medium text-[#8A8D98] mb-1">Adresse Email</label>
+                <input id="new-user-email" required type="email" value={newUser.email} onChange={e => setNewUser({...newUser, email: e.target.value})} className="w-full bg-[#111317] border border-[#2A2D36] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#00E35F]" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#8A8D98] mb-1">Code d'accès (Mot de passe)</label>
-                <input required type="text" value={newUser.accessCode} onChange={e => setNewUser({...newUser, accessCode: e.target.value})} className="w-full bg-[#111317] border border-[#2A2D36] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#00E35F]" />
+                <label htmlFor="new-user-access-code" className="block text-sm font-medium text-[#8A8D98] mb-1">Code d'accès (Mot de passe)</label>
+                <input id="new-user-access-code" required type="text" value={newUser.accessCode} onChange={e => setNewUser({...newUser, accessCode: e.target.value})} className="w-full bg-[#111317] border border-[#2A2D36] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#00E35F]" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#8A8D98] mb-1">Rôle</label>
-                <select value={newUser.role} onChange={e => setNewUser({...newUser, role: e.target.value})} className="w-full bg-[#111317] border border-[#2A2D36] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#00E35F]">
+                <label htmlFor="new-user-role" className="block text-sm font-medium text-[#8A8D98] mb-1">Rôle</label>
+                <select id="new-user-role" value={newUser.role} onChange={e => setNewUser({...newUser, role: e.target.value})} className="w-full bg-[#111317] border border-[#2A2D36] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#00E35F]">
                   <option value="admin">Super Admin</option>
                   <option value="manager">Manager</option>
                   <option value="editor">Éditeur</option>
@@ -91,24 +91,24 @@ export const AdminUsers = () => {
           <div className="bg-[#1A1D24] border border-[#2A2D36] rounded-2xl w-full max-w-md p-6">
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-xl font-bold text-white">Modifier le membre</h3>
-              <button onClick={() => setEditingUser(null)} className="text-[#8A8D98] hover:text-white"><X size={20}/></button>
+              <button type="button" onClick={() => setEditingUser(null)} className="text-[#8A8D98] hover:text-white" aria-label="Fermer"><X size={20}/></button>
             </div>
             <form onSubmit={handleUpdateUser} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-[#8A8D98] mb-1">Nom complet</label>
-                <input required type="text" value={editingUser.name} onChange={e => setEditingUser({...editingUser, name: e.target.value})} className="w-full bg-[#111317] border border-[#2A2D36] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#00E35F]" />
+                <label htmlFor="edit-user-name" className="block text-sm font-medium text-[#8A8D98] mb-1">Nom complet</label>
+                <input id="edit-user-name" required type="text" value={editingUser.name} onChange={e => setEditingUser({...editingUser, name: e.target.value})} className="w-full bg-[#111317] border border-[#2A2D36] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#00E35F]" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#8A8D98] mb-1">Adresse Email</label>
-                <input required type="email" value={editingUser.email} onChange={e => setEditingUser({...editingUser, email: e.target.value})} className="w-full bg-[#111317] border border-[#2A2D36] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#00E35F]" />
+                <label htmlFor="edit-user-email" className="block text-sm font-medium text-[#8A8D98] mb-1">Adresse Email</label>
+                <input id="edit-user-email" required type="email" value={editingUser.email} onChange={e => setEditingUser({...editingUser, email: e.target.value})} className="w-full bg-[#111317] border border-[#2A2D36] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#00E35F]" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#8A8D98] mb-1">Code d'accès (Mot de passe)</label>
-                <input required type="text" value={editingUser.accessCode || ''} onChange={e => setEditingUser({...editingUser, accessCode: e.target.value})} className="w-full bg-[#111317] border border-[#2A2D36] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#00E35F]" />
+                <label htmlFor="edit-user-access-code" className="block text-sm font-medium text-[#8A8D98] mb-1">Code d'accès (Mot de passe)</label>
+                <input id="edit-user-access-code" required type="text" value={editingUser.accessCode || ''} onChange={e => setEditingUser({...editingUser, accessCode: e.target.value})} className="w-full bg-[#111317] border border-[#2A2D36] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#00E35F]" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#8A8D98] mb-1">Rôle</label>
-                <select value={editingUser.role} onChange={e => setEditingUser({...editingUser, role: e.target.value})} className="w-full bg-[#111317] border border-[#2A2D36] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#00E35F]">
+                <label htmlFor="edit-user-role" className="block text-sm font-medium text-[#8A8D98] mb-1">Rôle</label>
+                <select id="edit-user-role" value={editingUser.role} onChange={e => setEditingUser({...editingUser, role: e.target.value})} className="w-full bg-[#111317] border border-[#2A2D36] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#00E35F]">
                   <option value="admin">Super Admin</option>
                   <option value="manager">Manager</option>
                   <option value="editor">Éditeur</option>
@@ -158,10 +158,10 @@ export const AdminUsers = () => {
                   <td className="px-6 py-4"><span className="bg-[#00E35F]/10 text-[#00E35F] px-2 py-1 rounded text-xs font-bold">{user.status}</span></td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex items-center justify-end gap-2">
-                      <button onClick={() => setEditingUser(user)} className="p-2 text-[#8A8D98] hover:text-[#00E35F] hover:bg-[#00E35F]/10 rounded-lg transition-all" title="Modifier">
+                      <button type="button" onClick={() => setEditingUser(user)} className="p-2 text-[#8A8D98] hover:text-[#00E35F] hover:bg-[#00E35F]/10 rounded-lg transition-all" title="Modifier">
                         <Edit2 size={16} />
                       </button>
-                      <button onClick={() => handleDeleteUser(user.id, user.name)} className="p-2 text-[#8A8D98] hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all" title="Supprimer">
+                      <button type="button" onClick={() => handleDeleteUser(user.id, user.name)} className="p-2 text-[#8A8D98] hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all" title="Supprimer">
                         <Trash2 size={16} />
                       </button>
                     </div>
@@ -197,7 +197,7 @@ export const AdminSettings = () => {
           <h1 className="text-2xl font-bold text-white mb-1">Paramètres</h1>
           <p className="text-sm text-[#8A8D98]">Configuration générale du site</p>
         </div>
-        <button onClick={handleSave} className="bg-[#00E35F] hover:bg-green-400 text-black font-bold py-2.5 px-4 rounded-xl transition-all flex items-center gap-2">
+        <button type="button" onClick={handleSave} className="bg-[#00E35F] hover:bg-green-400 text-black font-bold py-2.5 px-4 rounded-xl transition-all flex items-center gap-2">
           <Save size={18} />
           Enregistrer
         </button>
@@ -208,16 +208,16 @@ export const AdminSettings = () => {
           <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2"><Settings size={18} className="text-[#00E35F]"/> Informations Générales</h3>
           <div className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-[#8A8D98] mb-1">Nom de l'établissement</label>
-              <input type="text" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full bg-[#111317] border border-[#2A2D36] rounded-lg px-3 py-2 text-white" />
+              <label htmlFor="settings-name" className="block text-xs font-semibold text-[#8A8D98] mb-1">Nom de l'établissement</label>
+              <input id="settings-name" type="text" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full bg-[#111317] border border-[#2A2D36] rounded-lg px-3 py-2 text-white" />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-[#8A8D98] mb-1">Email de contact</label>
-              <input type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="w-full bg-[#111317] border border-[#2A2D36] rounded-lg px-3 py-2 text-white" />
+              <label htmlFor="settings-email" className="block text-xs font-semibold text-[#8A8D98] mb-1">Email de contact</label>
+              <input id="settings-email" type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="w-full bg-[#111317] border border-[#2A2D36] rounded-lg px-3 py-2 text-white" />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-[#8A8D98] mb-1">Téléphone</label>
-              <input type="text" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="w-full bg-[#111317] border border-[#2A2D36] rounded-lg px-3 py-2 text-white" />
+              <label htmlFor="settings-phone" className="block text-xs font-semibold text-[#8A8D98] mb-1">Téléphone</label>
+              <input id="settings-phone" type="text" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="w-full bg-[#111317] border border-[#2A2D36] rounded-lg px-3 py-2 text-white" />
             </div>
           </div>
         </div>
@@ -226,16 +226,16 @@ export const AdminSettings = () => {
           <h3 className="text-lg font-bold text-white mb-4">Réseaux Sociaux & Horaires</h3>
           <div className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-[#8A8D98] mb-1">Lien Instagram</label>
-              <input type="text" value={formData.instagram} onChange={e => setFormData({...formData, instagram: e.target.value})} className="w-full bg-[#111317] border border-[#2A2D36] rounded-lg px-3 py-2 text-white" />
+              <label htmlFor="settings-instagram" className="block text-xs font-semibold text-[#8A8D98] mb-1">Lien Instagram</label>
+              <input id="settings-instagram" type="text" value={formData.instagram} onChange={e => setFormData({...formData, instagram: e.target.value})} className="w-full bg-[#111317] border border-[#2A2D36] rounded-lg px-3 py-2 text-white" />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-[#8A8D98] mb-1">Lien Facebook</label>
-              <input type="text" value={formData.facebook} onChange={e => setFormData({...formData, facebook: e.target.value})} className="w-full bg-[#111317] border border-[#2A2D36] rounded-lg px-3 py-2 text-white" />
+              <label htmlFor="settings-facebook" className="block text-xs font-semibold text-[#8A8D98] mb-1">Lien Facebook</label>
+              <input id="settings-facebook" type="text" value={formData.facebook} onChange={e => setFormData({...formData, facebook: e.target.value})} className="w-full bg-[#111317] border border-[#2A2D36] rounded-lg px-3 py-2 text-white" />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-[#8A8D98] mb-1">Horaires (Pied de page)</label>
-              <textarea rows="2" value={formData.hours} onChange={e => setFormData({...formData, hours: e.target.value})} className="w-full bg-[#111317] border border-[#2A2D36] rounded-lg px-3 py-2 text-white"></textarea>
+              <label htmlFor="settings-hours" className="block text-xs font-semibold text-[#8A8D98] mb-1">Horaires (Pied de page)</label>
+              <textarea id="settings-hours" rows="2" value={formData.hours} onChange={e => setFormData({...formData, hours: e.target.value})} className="w-full bg-[#111317] border border-[#2A2D36] rounded-lg px-3 py-2 text-white"></textarea>
             </div>
           </div>
         </div>
@@ -245,12 +245,13 @@ export const AdminSettings = () => {
 };
 
 export const AdminReports = () => {
-  const { transactions, reservations, newsletters } = useAdmin();
+  const { transactions, reservations, newsletters, tickets } = useAdmin();
 
   const downloadCSV = (filename, data, headers) => {
-    let csvContent = "data:text/csv;charset=utf-8," + headers.join(",") + "\n";
+    // Utiliser le point-virgule comme séparateur pour Excel en français
+    let csvContent = "data:text/csv;charset=utf-8," + headers.join(";") + "\n";
     data.forEach(row => {
-      csvContent += row.join(",") + "\n";
+      csvContent += row.join(";") + "\n";
     });
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
@@ -262,20 +263,30 @@ export const AdminReports = () => {
   };
 
   const exportTransactions = () => {
-    const headers = ["ID", "Montant", "Date", "Evenement", "Statut"];
-    const data = transactions.map(t => [t.id, t.amount, t.date, t.event_id, t.status]);
+    const headers = ["ID", "Montant", "Date", "Client", "Produit", "Statut"];
+    const data = transactions.map(t => [
+      t.id,
+      `"${t.amount || ''}"`,
+      `"${t.date || ''}"`,
+      `"${t.client || ''}"`,
+      `"${t.type || ''}"`,
+      `"${t.status || ''}"`
+    ]);
     downloadCSV("bilan_financier.csv", data, headers);
   };
 
   const exportClients = () => {
-    const headers = ["ID", "Nom", "Email", "Telephone", "Date"];
-    const data = reservations.map(r => [r.id, `"${r.name}"`, `"${r.email}"`, `"${r.phone}"`, r.date]);
-    downloadCSV("clients_reservations.csv", data, headers);
+    const headers = ["Source", "Nom", "Email", "Telephone", "Date"];
+    const allClients = [
+      ...reservations.map(r => ['"Réservation"', `"${r.name || ''}"`, `"${r.email || ''}"`, `"${r.phone || ''}"`, `"${r.created_at || r.date || ''}"`]),
+      ...(tickets || []).map(t => [`"Ticket: ${t.ticket_name || t.ticket_type || 'Standard'}"`, `"${t.buyer_name || ''}"`, `"${t.buyer_email || ''}"`, `"${t.buyer_phone || ''}"`, `"${t.created_at || ''}"`])
+    ];
+    downloadCSV("clients_global.csv", allClients, headers);
   };
 
   const exportNewsletters = () => {
     const headers = ["ID", "Email", "Date d'inscription"];
-    const data = newsletters.map(n => [n.id, n.email, n.subscribed_at]);
+    const data = newsletters.map(n => [n.id, `"${n.email || ''}"`, `"${n.created_at || n.subscribed_at || ''}"`]);
     downloadCSV("abonnes_newsletter.csv", data, headers);
   };
 
@@ -295,7 +306,7 @@ export const AdminReports = () => {
           </div>
           <h3 className="text-lg font-bold text-white mb-2">Bilan Financier Mensuel</h3>
           <p className="text-sm text-[#8A8D98] mb-4 flex-grow">Exportez le résumé de toutes vos transactions du mois en cours au format CSV.</p>
-          <button onClick={exportTransactions} className="w-full bg-[#2A2D36] hover:bg-[#00E35F]/20 hover:text-[#00E35F] text-white font-medium py-2 rounded-lg flex items-center justify-center gap-2 transition-colors">
+          <button type="button" onClick={exportTransactions} className="w-full bg-[#2A2D36] hover:bg-[#00E35F]/20 hover:text-[#00E35F] text-white font-medium py-2 rounded-lg flex items-center justify-center gap-2 transition-colors">
             <Download size={16} /> Télécharger
           </button>
         </div>
@@ -306,7 +317,7 @@ export const AdminReports = () => {
           </div>
           <h3 className="text-lg font-bold text-white mb-2">Base de données Clients</h3>
           <p className="text-sm text-[#8A8D98] mb-4 flex-grow">Exportez la liste de tous vos clients (depuis les réservations) avec contacts.</p>
-          <button onClick={exportClients} className="w-full bg-[#2A2D36] hover:bg-orange-500/20 hover:text-orange-400 text-white font-medium py-2 rounded-lg flex items-center justify-center gap-2 transition-colors">
+          <button type="button" onClick={exportClients} className="w-full bg-[#2A2D36] hover:bg-orange-500/20 hover:text-orange-400 text-white font-medium py-2 rounded-lg flex items-center justify-center gap-2 transition-colors">
             <Download size={16} /> Télécharger
           </button>
         </div>
@@ -317,7 +328,7 @@ export const AdminReports = () => {
           </div>
           <h3 className="text-lg font-bold text-white mb-2">Emails Newsletters</h3>
           <p className="text-sm text-[#8A8D98] mb-4 flex-grow">Générez un fichier CSV contenant tous vos abonnés.</p>
-          <button onClick={exportNewsletters} className="w-full bg-[#2A2D36] hover:bg-purple-500/20 hover:text-purple-400 text-white font-medium py-2 rounded-lg flex items-center justify-center gap-2 transition-colors">
+          <button type="button" onClick={exportNewsletters} className="w-full bg-[#2A2D36] hover:bg-purple-500/20 hover:text-purple-400 text-white font-medium py-2 rounded-lg flex items-center justify-center gap-2 transition-colors">
             <Download size={16} /> Télécharger
           </button>
         </div>

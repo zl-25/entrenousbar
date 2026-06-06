@@ -22,6 +22,11 @@
   overflow: hidden;
   aspect-ratio: 1; /* For simplicity, can be varied for real masonry */
   cursor: pointer;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  display: block;
+  color: inherit;
 }
 
 /* Simulate some masonry variety by making some items taller */

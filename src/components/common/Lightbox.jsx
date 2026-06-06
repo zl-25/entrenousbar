@@ -1,14 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useEffectEvent } from 'react';
 import OptimizedImage from './OptimizedImage';
 
 const Lightbox = ({ images, activeIndex, onClose, onPrev, onNext }) => {
+  const closeLightbox = useEffectEvent(onClose);
+  const showPreviousImage = useEffectEvent(onPrev);
+  const showNextImage = useEffectEvent(onNext);
+
   useEffect(() => {
     if (activeIndex === null) return;
 
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape') onClose();
-      if (e.key === 'ArrowLeft') onPrev();
-      if (e.key === 'ArrowRight') onNext();
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') showPreviousImage();
+      if (e.key === 'ArrowRight') showNextImage();
     };
 
     // Prevent body scroll when lightbox is open
@@ -19,7 +23,7 @@ const Lightbox = ({ images, activeIndex, onClose, onPrev, onNext }) => {
       document.body.style.overflow = '';
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [activeIndex, onClose, onPrev, onNext]);
+  }, [activeIndex]);
 
   if (activeIndex === null) return null;
 
@@ -28,10 +32,17 @@ const Lightbox = ({ images, activeIndex, onClose, onPrev, onNext }) => {
   return (
     <div 
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-md transition-opacity duration-300"
-      onClick={onClose}
     >
+      <button
+        type="button"
+        className="absolute inset-0 cursor-default"
+        onClick={onClose}
+        aria-label="Fermer la galerie"
+      />
+
       {/* Close button */}
       <button 
+        type="button"
         onClick={onClose}
         className="absolute top-6 right-6 text-white/70 hover:text-white transition-colors duration-200 p-2 z-50 bg-white/5 hover:bg-white/10 rounded-full cursor-pointer"
         aria-label="Fermer la galerie"
@@ -41,6 +52,7 @@ const Lightbox = ({ images, activeIndex, onClose, onPrev, onNext }) => {
 
       {/* Navigation - Prev */}
       <button 
+        type="button"
         onClick={(e) => {
           e.stopPropagation();
           onPrev();
@@ -76,6 +88,7 @@ const Lightbox = ({ images, activeIndex, onClose, onPrev, onNext }) => {
 
       {/* Navigation - Next */}
       <button 
+        type="button"
         onClick={(e) => {
           e.stopPropagation();
           onNext();

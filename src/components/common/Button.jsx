@@ -9,6 +9,7 @@ const Button = ({
   to, 
   href, 
   className = '', 
+  type = 'button',
   ...props 
 }) => {
   const baseClass = `btn btn-${variant} btn-${size} ${className}`;
@@ -22,7 +23,7 @@ const Button = ({
   }
   
   return (
-    <button className={baseClass} {...props}>
+    <button type={type} className={baseClass} {...props}>
       {children}
     </button>
   );

@@ -27,13 +27,15 @@ const AdminGallery = () => {
         </div>
         <div className="relative">
           <input 
+            id="gallery-upload"
             type="file" 
             accept="image/*" 
+            aria-label="Ajouter une photo"
             onChange={handleFileUpload}
             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
             disabled={uploading}
           />
-          <button className="bg-[#00E35F] hover:bg-green-400 text-black font-bold py-2.5 px-4 rounded-xl transition-all shadow-[0_0_15px_rgba(0,227,95,0.2)] flex items-center gap-2">
+          <button type="button" className="bg-[#00E35F] hover:bg-green-400 text-black font-bold py-2.5 px-4 rounded-xl transition-all shadow-[0_0_15px_rgba(0,227,95,0.2)] flex items-center gap-2">
             <Upload size={18} />
             {uploading ? 'Téléchargement...' : 'Ajouter une photo'}
           </button>
@@ -58,6 +60,8 @@ const AdminGallery = () => {
                 <img src={img.url} alt="Gallery" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <button 
+                    type="button"
+                    aria-label="Supprimer la photo"
                     onClick={() => {
                       if(window.confirm('Voulez-vous vraiment supprimer cette photo ?')) {
                         deleteGalleryImage(img.id);

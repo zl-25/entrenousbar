@@ -5,7 +5,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { Link } from 'react-router-dom';
 
 const AdminDashboard = () => {
-  const { events, reservations, transactions } = useAdmin();
+  const { events, reservations, transactions, tickets } = useAdmin();
   const { userRole } = useAuth();
 
   // Real stats calculation based on actual DB records
@@ -15,9 +15,19 @@ const AdminDashboard = () => {
   }, 0);
   const eventsCount = events.length;
   const resCount = reservations.length;
+  const ticketCount = tickets ? tickets.length : 0;
   
-  // Calculate unique clients from reservations
-  const uniqueClients = [...new Set(reservations.map(r => r.name || r.client_name))].length;
+  // Calculate ticket sales total
+  const ticketSalesTotal = (tickets || []).reduce((acc, t) => {
+    const priceStr = typeof t.price === 'string' ? t.price : t.price?.toString() || '0';
+    return acc + parseInt(priceStr.replace(/[^0-9]/g, ''), 10);
+  }, 0);
+  
+  // Calculate unique clients from reservations and tickets
+  const uniqueClients = [...new Set([
+    ...reservations.map(r => r.name || r.client_name),
+    ...(tickets || []).map(t => t.buyer_name)
+  ].filter(Boolean))].length;
 
   return (
     <div className="space-y-4 sm:space-y-6 pb-10">
@@ -32,11 +42,11 @@ const AdminDashboard = () => {
             <p className="text-[10px] sm:text-xs font-medium text-[#8A8D98] uppercase tracking-wider">Ventes Tickets</p>
           </div>
           <h3 className="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4 truncate">
-            {userRole === 'editor' ? '***' : '0 F'}
+            {userRole === 'editor' ? '***' : `${ticketSalesTotal.toLocaleString()} F`}
           </h3>
           <div className="flex items-center justify-between">
             <span className="text-[10px] sm:text-xs font-medium text-[#00E35F]">
-              {userRole === 'editor' ? '-' : '0%'} <span className="text-[#8A8D98] font-normal hidden sm:inline">ce mois</span>
+              {userRole === 'editor' ? '-' : `${ticketCount} ticket${ticketCount > 1 ? 's' : ''}`} <span className="text-[#8A8D98] font-normal hidden sm:inline">vendu{ticketCount > 1 ? 's' : ''}</span>
             </span>
             <svg width="50" height="16" viewBox="0 0 60 20" className="overflow-visible">
               <path d="M0,15 L10,15 L20,15 L30,15 L40,15 L50,15 L60,15" fill="none" stroke="#00E35F" strokeWidth="1.5" strokeLinecap="round"/>

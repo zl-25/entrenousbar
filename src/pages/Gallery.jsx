@@ -51,10 +51,12 @@ const Gallery = () => {
 
         <div className="masonry-grid">
           {allImages.map((img, idx) => (
-            <div 
+            <button 
+              type="button"
               key={img.id} 
               className="masonry-item"
               onClick={() => setActiveIndex(idx)}
+              aria-label={`Ouvrir l'image ${idx + 1}`}
             >
               <img
                 src={img.url}
@@ -70,7 +72,7 @@ const Gallery = () => {
               <div className="masonry-overlay">
                 <span className="zoom-icon">+</span>
               </div>
-            </div>
+            </button>
           ))}
         </div>
       </div>

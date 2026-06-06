@@ -34,7 +34,7 @@ const SPACES = [
 const SpaceSelector = ({ selectedSpace, onSelectSpace }) => {
   return (
     <div className="space-y-4">
-      <label className="text-[10px] font-bold tracking-widest text-gray-500 uppercase mb-4 block">Sélectionnez votre espace</label>
+      <p className="text-[10px] font-bold tracking-widest text-gray-500 uppercase mb-4">Sélectionnez votre espace</p>
       {SPACES.map(space => (
         <label key={space.id} className="block cursor-pointer group">
           <input 

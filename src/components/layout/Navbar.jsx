@@ -53,7 +53,7 @@ const Navbar = () => {
             <Link to="/admin/login" className="text-gray-400 hover:text-white transition-colors flex items-center justify-center p-1" title="Espace Staff">
               <iconify-icon icon="lucide:user" class="text-xl"></iconify-icon>
             </Link>
-            <button className="lg:hidden text-white text-2xl" onClick={() => setIsOpen(!isOpen)}>
+            <button type="button" className="lg:hidden text-white text-2xl" onClick={() => setIsOpen(!isOpen)} aria-label={isOpen ? 'Fermer le menu' : 'Ouvrir le menu'}>
               <iconify-icon icon={isOpen ? "lucide:x" : "lucide:menu"}></iconify-icon>
             </button>
           </div>

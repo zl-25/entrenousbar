@@ -49,6 +49,7 @@ const Events = () => {
           <div className="flex justify-center flex-wrap gap-2 sm:gap-3 mt-8">
             {FILTERS.map(filter => (
               <button 
+                type="button"
                 key={filter}
                 className={`px-5 sm:px-6 py-2 sm:py-2.5 rounded-full text-[10px] sm:text-xs font-bold tracking-widest uppercase transition-all duration-300 border ${
                   activeFilter === filter 

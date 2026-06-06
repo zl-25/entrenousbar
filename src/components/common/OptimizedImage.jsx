@@ -20,11 +20,9 @@ const OptimizedImage = ({
   onLoad,
   onError
 }) => {
-  const [isLoaded, setIsLoaded] = useState(true); // Start as loaded to show image immediately
   const [hasError, setHasError] = useState(false);
 
   const handleLoad = (e) => {
-    setIsLoaded(true);
     onLoad?.(e);
   };
 

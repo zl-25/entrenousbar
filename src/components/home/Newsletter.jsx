@@ -65,6 +65,7 @@ const Newsletter = () => {
               <form onSubmit={handleSubmit} className="flex w-full md:w-[500px]">
                 <input 
                   type="email" 
+                  aria-label="Adresse email pour la newsletter"
                   placeholder="Votre adresse email" 
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}

@@ -40,7 +40,7 @@ const CalendarComponent = ({
   return (
     <div className="bg-white/[0.03] backdrop-blur-md border border-white/10 rounded-3xl p-6 space-y-6">
       <div>
-        <label className="text-[10px] font-bold tracking-widest text-gray-500 uppercase mb-4 block">Date de réservation</label>
+        <p className="text-[10px] font-bold tracking-widest text-gray-500 uppercase mb-4">Date de réservation</p>
         
         {/* Calendar header */}
         <div className="flex items-center justify-between mb-6">
@@ -49,6 +49,7 @@ const CalendarComponent = ({
             onClick={() => onMonthChange(-1)}
             disabled={!canGoPrev}
             className="p-2 hover:bg-white/10 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            aria-label="Mois précédent"
           >
             <iconify-icon icon="lucide:chevron-left" className="text-xl"></iconify-icon>
           </button>
@@ -59,6 +60,7 @@ const CalendarComponent = ({
             type="button"
             onClick={() => onMonthChange(1)}
             className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+            aria-label="Mois suivant"
           >
             <iconify-icon icon="lucide:chevron-right" className="text-xl"></iconify-icon>
           </button>
@@ -81,6 +83,7 @@ const CalendarComponent = ({
               type="button"
               disabled={item.disabled}
               onClick={() => !item.disabled && onSelectDate(item.day)}
+              aria-label={item.day ? `Sélectionner le ${item.day} ${MONTH_NAMES[calendarMonth]} ${calendarYear}` : undefined}
               className={`aspect-square rounded-lg text-sm font-bold transition-all duration-200 ${
                 item.disabled
                   ? 'bg-white/5 text-gray-600 cursor-not-allowed'

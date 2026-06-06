@@ -65,7 +65,7 @@ const ReservationForm = ({
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Person Count */}
       <div>
-        <label className="text-[10px] font-bold tracking-widest text-gray-500 uppercase mb-4 block">Nombre de personnes</label>
+        <p className="text-[10px] font-bold tracking-widest text-gray-500 uppercase mb-4">Nombre de personnes</p>
         <div className="grid grid-cols-4 gap-2 sm:gap-3">
           {PERSON_OPTIONS.map((opt) => (
             <button
@@ -86,7 +86,7 @@ const ReservationForm = ({
 
       {/* Time Selection */}
       <div>
-        <label className="text-[10px] font-bold tracking-widest text-gray-500 uppercase mb-4 block">Heure de réservation</label>
+        <p className="text-[10px] font-bold tracking-widest text-gray-500 uppercase mb-4">Heure de réservation</p>
         <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 sm:gap-3">
           {TIME_OPTIONS.map((time) => (
             <button
@@ -108,10 +108,11 @@ const ReservationForm = ({
       {/* Form Fields */}
       <div className="space-y-5 pt-4">
         <div>
-          <label className="block text-[10px] font-bold tracking-widest text-gray-500 uppercase mb-2">
+          <label htmlFor="reservation-name" className="block text-[10px] font-bold tracking-widest text-gray-500 uppercase mb-2">
             Nom Complet <span className="text-red-500">*</span>
           </label>
           <input 
+            id="reservation-name"
             type="text" 
             name="name"
             placeholder="Ex: Jean Dupont" 
@@ -129,10 +130,11 @@ const ReservationForm = ({
 
         <div className="grid sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-[10px] font-bold tracking-widest text-gray-500 uppercase mb-2">
+            <label htmlFor="reservation-phone" className="block text-[10px] font-bold tracking-widest text-gray-500 uppercase mb-2">
               Téléphone <span className="text-red-500">*</span>
             </label>
             <input 
+              id="reservation-phone"
               type="tel" 
               name="phone"
               placeholder="Ex: +241 62 12 34 56" 
@@ -148,10 +150,11 @@ const ReservationForm = ({
             {touched.phone && errors.phone && <p className="text-red-400 text-xs mt-1">{errors.phone}</p>}
           </div>
           <div>
-            <label className="block text-[10px] font-bold tracking-widest text-gray-500 uppercase mb-2">
+            <label htmlFor="reservation-email" className="block text-[10px] font-bold tracking-widest text-gray-500 uppercase mb-2">
               Email <span className="text-red-500">*</span>
             </label>
             <input 
+              id="reservation-email"
               type="email" 
               name="email"
               placeholder="votre@email.com" 
@@ -169,8 +172,9 @@ const ReservationForm = ({
         </div>
 
         <div>
-          <label className="block text-[10px] font-bold tracking-widest text-gray-500 uppercase mb-2">Adresse (Facultatif)</label>
+          <label htmlFor="reservation-address" className="block text-[10px] font-bold tracking-widest text-gray-500 uppercase mb-2">Adresse (Facultatif)</label>
           <textarea 
+            id="reservation-address"
             name="address"
             placeholder="Votre adresse de résidence" 
             rows="3" 
