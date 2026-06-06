@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
 
   // Utilisateurs par défaut pour la démo
   const DEFAULT_USERS = [
-    { email: 'admin@entrenous.ga', password: '123', role: 'admin', name: 'Super Admin' },
+    { email: 'admin@entrenous.ga', password: '1234', role: 'admin', name: 'Super Admin' },
     { email: 'manager@entrenous.ga', password: '123', role: 'manager', name: 'Manager' },
     { email: 'editeur@entrenous.ga', password: '123', role: 'editor', name: 'Staff Entrée' }
   ];
@@ -62,7 +62,7 @@ export const AuthProvider = ({ children }) => {
     });
 
     const user = uniqueUsers.find(u => u.email === email && u.password === password);
-    
+
     if (user) {
       localStorage.setItem('adminAuth', 'true');
       localStorage.setItem('adminRole', user.role);
